@@ -5,25 +5,48 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 @Entity(name="Korisnik")
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long Id;
-	
-	@Column
+	@Column @NotEmpty(message="Polje ime nije uneto.") @Pattern(regexp="[a-zA-Z]+", message="U Imenu su dozvoljena samo slova.")
 	private String name;
-	@Column
+	@Column @NotEmpty(message="Polje prezime nije uneto.") @Pattern(regexp="[a-zA-Z]+", message="U Prezimenu su dozvoljena samo slova.")
 	private String surname;
-	@Column
+	@Column @Email(message="Email nije dobrog formata.") @NotEmpty(message="Polje email nije uneto.")
 	private String email;
-	@Column
+	@Column @NotEmpty(message="Lozinka nije uneta.")
 	private String password;
-	@Column
+	@Column @NotEmpty(message="Grad nije unet.")
 	private String city;
-	@Column
+	@Column @NotEmpty(message="Broj nije unet") @Pattern(regexp="[0-9]+", message="Unos za broj nije validan.")
 	private String phoneNumber;
+	@Column
+	private boolean enabled;
+	@Column
+	private String confirmationToken;
 	
+	public String getConfirmationToken() {
+		return confirmationToken;
+	}
+
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public User(){}
 	
 	public String getName() {

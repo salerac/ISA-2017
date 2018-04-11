@@ -46,5 +46,13 @@ public class UserServiceImpl implements UserService {
 		repository.delete(user);
 		
 	}
+	
+	public User findByEmail(String email) {
+		return repository.findByEmail(email);
+	}
+	
+	public User findByConfirmationToken(String confirmationToken) {
+		return repository.findByConfirmationToken(confirmationToken);
+	}
 
 }

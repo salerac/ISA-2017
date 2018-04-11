@@ -14,4 +14,10 @@ public interface UserService {
 	User save(User user) throws Exception;
 
 	void delete(Long id);
+	
+	User findByEmail(String email); 
+	
+	User findByConfirmationToken(String confirmationToken); 
+		
+	
 }
