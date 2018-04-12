@@ -2,6 +2,8 @@ package com.isa.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
 @Entity(name="Korisnik")
 public class User {
 	@Id
@@ -26,10 +29,21 @@ public class User {
 	private String city;
 	@Column @NotEmpty(message="Broj nije unet") @Pattern(regexp="[0-9]+", message="Unos za broj nije validan.")
 	private String phoneNumber;
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Privilege privilege;
 	@Column
 	private boolean enabled;
 	@Column
 	private String confirmationToken;
+	
+	public Privilege getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(Privilege privilege) {
+		this.privilege = privilege;
+	}
 	
 	public String getConfirmationToken() {
 		return confirmationToken;
@@ -84,5 +98,11 @@ public class User {
 	}
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	public Long getId() {
+		return Id;
+	}
+	public void setId(Long id) {
+		Id = id;
 	}
 }

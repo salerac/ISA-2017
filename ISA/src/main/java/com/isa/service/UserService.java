@@ -18,6 +18,10 @@ public interface UserService {
 	User findByEmail(String email); 
 	
 	User findByConfirmationToken(String confirmationToken); 
+	
+	void setActiveUser(User user);
+	
+	User getActiveUser();
 		
 	
 }

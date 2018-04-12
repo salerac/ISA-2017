@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.controller.dto.LoginDTO;
+import com.isa.domain.Privilege;
 import com.isa.domain.User;
 import com.isa.service.EmailService;
 import com.isa.service.UserService;
@@ -31,6 +33,25 @@ public class UserController {
 	@Autowired
 	private EmailService emailService;
 	
+	
+	@RequestMapping(value="/signin", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> login(@RequestBody LoginDTO loginDTO){
+		User user = service.findByEmail(loginDTO.getEmail());
+		if(user == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		else{
+			if(loginDTO.getPassword().equals(user.getPassword())){
+			if(!user.isEnabled())
+			return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+			else {
+				service.setActiveUser(user);
+				return new ResponseEntity<User>(user, HttpStatus.OK);
+			}
+			}
+			else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	@RequestMapping(value="/register", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> register(@RequestBody User user, HttpServletRequest request) throws Exception{
 		User registeredUser = service.findByEmail(user.getEmail());
@@ -40,6 +61,7 @@ public class UserController {
 			return new ResponseEntity(response,HttpStatus.CONFLICT);	
 		}
 		else{
+			user.setPrivilege(Privilege.REGISTERED_USER);
 			user.setEnabled(false);
 			user.setConfirmationToken(UUID.randomUUID().toString());
 			User returnUser = service.save(user);

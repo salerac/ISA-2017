@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +56,20 @@ public class UserServiceImpl implements UserService {
 	
 	public User findByConfirmationToken(String confirmationToken) {
 		return repository.findByConfirmationToken(confirmationToken);
+	}
+	
+
+	@Override
+	public void setActiveUser(User user) {
+		final Authentication authentication = new PreAuthenticatedAuthenticationToken(user.getId(), null);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	}
+
+	@Override
+	public User getActiveUser() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
