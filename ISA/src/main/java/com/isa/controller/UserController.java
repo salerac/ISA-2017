@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -12,11 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.controller.dto.LoginDTO;
 import com.isa.domain.Privilege;
@@ -35,21 +40,33 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/signin", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> login(@RequestBody LoginDTO loginDTO){
+	public Object login(@RequestBody LoginDTO loginDTO, HttpSession session){
 		User user = service.findByEmail(loginDTO.getEmail());
 		if(user == null){
+			System.out.print("user null");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			
 		}
 		else{
 			if(loginDTO.getPassword().equals(user.getPassword())){
-			if(!user.isEnabled())
-			return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+			if(!user.isEnabled()) {
+				System.out.print("nije validan");
+				return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+			}
+			
 			else {
 				service.setActiveUser(user);
-				return new ResponseEntity<User>(user, HttpStatus.OK);
+				 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			     String name = auth.getName();
+			     System.out.println(name + "RADI");
+			     session.setAttribute("loggedUser", user);
+			     return new RedirectView("/RegisteredUser/home.html",true);
 			}
 			}
-			else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			else {
+				System.out.print("nisu iste lozinke");
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}
 	}
 	@RequestMapping(value="/register", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

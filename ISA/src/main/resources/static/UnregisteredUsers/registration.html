@@ -19,6 +19,10 @@
 	$(function() {
 		var frm = $('#register');
 		frm.submit(function(e){
+			if($('#pass1').val() != $('#pass2').val()){
+				alert('nisu iste');
+				return false;
+			}
 			formData = JSON.stringify({
 				email:$("#register [name='email1']").val(),
                 password:$("#register [name='password1']").val(),
@@ -74,13 +78,13 @@
         <h1 class="text-center">Registration</h1>
 			<hr>
         <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email" name="email1" required="required">
+            <input type="email" class="form-control" placeholder="Email" name="email1" required="required" >
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" name="password1" required="required">
+            <input type="password" class="form-control" placeholder="Password" name="password1" required="required" id="pass1" >
         </div>
 		<div class="form-group">
-            <input type="password" class="form-control" placeholder="Repeat Password" name="repeatPassword" required="required">
+            <input type="password" class="form-control" placeholder="Repeat Password" name="repeatPassword" required="required" id="pass2">
         </div>
 		<div class="form-group">
             <input type="text" class="form-control" placeholder="First Name" name="firstName" required="required">

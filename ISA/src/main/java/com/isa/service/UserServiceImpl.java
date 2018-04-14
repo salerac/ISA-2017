@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
 		final Authentication authentication = new PreAuthenticatedAuthenticationToken(user.getId(), null);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
 	}
 
 	@Override
