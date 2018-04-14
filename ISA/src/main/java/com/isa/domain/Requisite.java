@@ -24,14 +24,18 @@ public class Requisite {
 	
 	@Column(name="Price", columnDefinition="DECIMAL(40,2)")
 	private float price;
+	
+	@Column(name="Reserved", columnDefinition="NUMERIC")
+	private long reserved=0;
 
 	
-	public Requisite(String nameReq, String descriptionReq, String image, float price) {
+	public Requisite(String nameReq, String descriptionReq, String image, float price, long reserved) {
 		super();
 		this.nameReq = nameReq;
 		this.descriptionReq = descriptionReq;
 		this.image = image;
 		this.price = price;
+		this.reserved = reserved;
 	}
 	
 	public Requisite() {
@@ -51,7 +55,6 @@ public class Requisite {
 	public String getNameReq() {
 		return nameReq;
 	}
-
 
 	public void setNameReq(String nameReq) {
 		this.nameReq = nameReq;
@@ -87,8 +90,17 @@ public class Requisite {
 		this.price = price;
 	}
 
+	public long getReserved() {
+		return reserved;
+	}
 
+	public void setReserved(long reserved) {
+		this.reserved = reserved;
+	}
+	
+	
 }
+
 
 
 

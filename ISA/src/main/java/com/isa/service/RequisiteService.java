@@ -8,7 +8,7 @@ public interface RequisiteService {
 	
 	Collection<Requisite> findAll();
 	
-	Requisite save(Requisite reguisite);
+	Requisite save(Requisite requisite);
 	Requisite findOne(Long id);
 	Requisite delete(Long id);
 
