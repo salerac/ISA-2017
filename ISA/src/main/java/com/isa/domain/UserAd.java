@@ -1,10 +1,18 @@
 package com.isa.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 @Entity(name="UserAd")
 public class UserAd {
@@ -28,14 +36,28 @@ public class UserAd {
 	@Column(name="Approval", columnDefinition="BOOLEAN")
 	private Boolean aproved=false;
 	
+	@Column(name="CreatedBy", columnDefinition="NUMERIC")
+	private long creatorId;
+	
+	
+	@ElementCollection
+	@CollectionTable(name = "Offers",joinColumns = @JoinColumn(name = "userAd_id", referencedColumnName = "id"))
+	@AttributeOverrides({
+        @AttributeOverride(name = "userId", column = @Column(name = "InterstedParty")),
+        @AttributeOverride(name = "price", column = @Column(name = "Price")),
+})
+	
+	
+	Set<Offer> offers = new HashSet<Offer>();
 
-	public UserAd(String nameAd, String descriptionAd, String date, String imageAd, Boolean aproved) {
+	public UserAd(String nameAd, String descriptionAd, String date, String imageAd, Boolean aproved,long creatorId) {
 		super();
 		this.nameAd = nameAd;
 		this.descriptionAd = descriptionAd;
 		this.date = date;
 		this.imageAd = imageAd;
 		this.aproved = aproved;
+		this.creatorId = creatorId;
 	}
 
 	
@@ -100,6 +122,32 @@ public class UserAd {
 	public void setAproved(Boolean aproved) {
 		this.aproved = aproved;
 	}
+
+
+	public long getCreatorId() {
+		return creatorId;
+	}
+
+
+	public void setCreatorId(long creatorId) {
+		this.creatorId = creatorId;
+	}
+
+
+	public Set<Offer> getOffers() {
+		return offers;
+	}
+
+
+	public void setOffers(Set<Offer> offers) {
+		this.offers = offers;
+	}
+	
+	public void addOffer(Offer offer) {
+		offers.add(offer);
+	}
+	
+	
 
 	
 }
