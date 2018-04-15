@@ -48,6 +48,7 @@ public class UserAd {
 })
 	
 	
+	
 	Set<Offer> offers = new HashSet<Offer>();
 
 	public UserAd(String nameAd, String descriptionAd, String date, String imageAd, Boolean aproved,long creatorId) {

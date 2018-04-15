@@ -55,7 +55,7 @@ public class RequisiteController {
 		return new ResponseEntity<>(editedRequisite, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/value= {id}/{userId}", method = RequestMethod.PUT)
+	@RequestMapping(value="/{id}/{userId}", method = RequestMethod.PUT)
 	public ResponseEntity<Requisite> reserveRequisite(@PathVariable Long id, @PathVariable Long userId){
 		Requisite requisite = requisiteService.findOne(id);
 		requisite.setReserved(userId);
