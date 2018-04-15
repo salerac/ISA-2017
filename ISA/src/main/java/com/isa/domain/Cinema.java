@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Cinema {
@@ -15,9 +16,12 @@ public class Cinema {
 	
 	private String adress;
 	
+	private String city;
+	
 	private String description;
 	
-	private boolean isBioskop;
+	@NotNull
+	private boolean isCinema;
 
 	
 	public Cinema(Long id, String name, String adress, String description) {
@@ -27,7 +31,21 @@ public class Cinema {
 		this.adress = adress;
 		this.description = description;
 	}
-
+	public Cinema() {}
+	
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
+	public boolean isCinema() {
+		return isCinema;
+	}
+	public void setCinema(boolean isCinema) {
+		this.isCinema = isCinema;
+	}
 	public Long getId() {
 		return id;
 	}

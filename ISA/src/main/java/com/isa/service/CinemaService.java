@@ -11,5 +11,7 @@ public interface CinemaService {
 	Cinema save(Cinema cinema);
 
 	Cinema findOne(Long id);
+	
+	void deleteAll();
 
 }

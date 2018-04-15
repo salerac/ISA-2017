@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,12 +53,10 @@ public class UserController {
 			}
 			
 			else {
-				service.setActiveUser(user);
-				 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			     String name = auth.getName();
-			     System.out.println(name + "RADI");
+			     System.out.println("RADI");
 			     session.setAttribute("loggedUser", user);
-			     return new RedirectView("/RegisteredUser/home.html",true);
+			  
+			     return new ResponseEntity<>(HttpStatus.OK);
 			}
 			}
 			else {
@@ -104,9 +100,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/loadUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<User>> getUsers(){
+	public ResponseEntity<Collection<User>> getUsers(HttpSession session){
+		
 		Collection<User> users = service.findAll();
 		return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
+		
+		
 	}
 	
 }

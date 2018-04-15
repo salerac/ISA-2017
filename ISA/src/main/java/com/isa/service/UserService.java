@@ -19,9 +19,9 @@ public interface UserService {
 	
 	User findByConfirmationToken(String confirmationToken); 
 	
-	void setActiveUser(User user);
+	/*void setActiveUser(User user);
 	
 	User getActiveUser();
-		
+	*/	
 	
 }

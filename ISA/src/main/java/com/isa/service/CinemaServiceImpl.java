@@ -28,4 +28,10 @@ public class CinemaServiceImpl implements CinemaService{
 		return repository.getOne(id);
 	}
 
+	@Override
+	public void deleteAll() {
+		repository.deleteAll();
+		
+	}
+
 }

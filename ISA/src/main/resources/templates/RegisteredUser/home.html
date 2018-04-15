@@ -1,0 +1,147 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+
+<head >
+
+	<!--link rel="stylesheet" href="css/bootstrap.min.css"-->
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/navbar.css">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> User </title>
+	
+	<script>
+	$(function(){
+					$.ajax({
+					url: "/cinemas",
+					method: "GET",
+			 		});
+				});
+	</script>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../index.html"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star</a>
+    </div>
+    <ul class="nav navbar-nav">
+
+        <li class="active"><a class="dropdown-toggle" data-toggle="tab" href="#home">Home</a>
+		</li>
+        <li><a data-toggle="tab" href="#tab1">Theaters</a></li>
+        <li><a data-toggle="tab" href="#tab2">Cinemas</a></li>
+        <li><a data-toggle="tab" href="#tab3">Friends</a></li>
+		<li><a data-toggle="tab" href="#tab4">Reservations</a></li>
+		<li><a data-toggle="tab" href="#tab5">Settings</a></li>
+		<li><a data-toggle="tab" href="#tab6">Fan Zone</a></li>
+      </ul>
+	  
+	<ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Out</a></li>	  
+    </ul>
+	
+	
+  </div>
+</nav>
+
+<div class="container-fluid text-center">    
+  <div class="row content">
+   
+	
+    <div class="col-sm-8 text-left"> 
+      <div class="tab-content" style="width:820px;">
+	  
+	  
+	  <div id="home" class="tab-pane fade in active">
+	 
+	
+		<div>
+		
+		<p style="font-size:150%;" th:text="${session.loggedUser.getName()}" th:unless="${session == null}"></p>
+	  	<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getSurname()}" th:unless="${session == null}"></p>
+		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getEmail()}" th:unless="${session == null}"></p>
+		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getPhoneNumber()}" th:unless="${session == null}"></p>
+		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getCity()}" th:unless="${session == null}"></p>
+	  	
+		</div>
+		<hr>
+		
+	
+      </div>
+
+ <div id="tab1" class="tab-pane fade">
+      <h1>theaters</h1>
+	  <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Adress</th>
+        </tr>
+        <tr th:each="cinema : ${cinemas}">
+            <td th:if="${cinema.isCinema() == false}" th:text="${cinema.getName()}">ayy</td>
+            <td th:if="${cinema.isCinema() == false}" th:text="${cinema.getAdress()}">ayy</td>
+        </tr>
+    </table>
+	  
+		
+    </div>
+	
+ <div id="tab2" class="tab-pane fade" th:if="${cinemas != null}">
+      <h1>cinemas</h1>
+	  <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Adress</th>
+        </tr>
+        <tr th:each="cinema : ${cinemas}">
+            <td th:if="${cinema.isCinema() == true}" th:text="${cinema.getName()}">ayy</td>
+            <td th:if="${cinema.isCinema() == true}" th:text="${cinema.getAdress()}">ayy</td>
+        </tr>
+    </table>
+	  
+	</div>
+	
+ <div id="tab3" class="tab-pane fade">
+      <h1>friends</h1>
+	  
+	  
+    </div>
+
+	 <div id="tab4" class="tab-pane fade">
+      <h1>reservations</h1>
+	  
+	  
+    </div>
+	
+	 <div id="tab5" class="tab-pane fade">
+      <h1>settings</h1>
+	  
+	  
+    </div>
+	
+	 <div id="tab6" class="tab-pane fade">
+      <h1>fan zone</h1>
+	  
+	  
+    </div>
+	
+	
+</div>
+</div>
+
+</div>
+</div>
+
+
+
+</body>
+</html>   

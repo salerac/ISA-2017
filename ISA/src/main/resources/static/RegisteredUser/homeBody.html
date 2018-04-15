@@ -1,0 +1,12 @@
+
+<h1>cinemas</h1>
+	  <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Adress</th>
+        </tr>
+        <tr th:each="cinema : ${cinemas}">
+            <td th:text="${cinema.getName()}">ayy</td>
+            <td th:text="${cinema.getAdress()}">ayy</td>
+        </tr>
+        </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html  xmlns:th="http://www.thymeleaf.org">
 
 
 
@@ -15,6 +15,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Login </title>
 	<script>
+	
 	$(function(){
 	var frm = $('#login');
 		frm.submit(function submit(event){
@@ -23,20 +24,22 @@
 				email:$("#login [name='email']").val(),
                 password:$("#login [name='password']").val(),
 			});
+			
 			$.ajax({
 				url: "/signin",
 				type: "POST",
 				data: formData,
 				contentType: "application/json",
 				success: function(data){
-					window.location.replace('/RegisteredUser/home.html');
+					window.location = "http://localhost:8080/cinemas"
+					
 				},
 				error: function(data){
 					alert('neuspeh');
 					 console.log(data);
 				}
 			});
-			
+			return false;
 		});
 		
 		
