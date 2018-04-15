@@ -20,7 +20,7 @@ public class HomeController {
 		return "login";
 	}
 	
-	@RequestMapping("/register")
+	@RequestMapping("/registerForm")
 	public String register(HttpSession session) {
 		return "UnregisteredUsers/registration";
 	}

@@ -68,7 +68,7 @@ public class UserController {
 	@RequestMapping(value="/register", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> register(@RequestBody User user, HttpServletRequest request) throws Exception{
 		User registeredUser = service.findByEmail(user.getEmail());
-		
+		System.out.println("USAO JE");
 		if(registeredUser != null){
 			String response = "Korisnik sa datim email-om vec postoji.";
 			return new ResponseEntity(response,HttpStatus.CONFLICT);	

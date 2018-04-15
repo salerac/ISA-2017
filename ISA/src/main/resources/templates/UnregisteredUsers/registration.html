@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 
 
@@ -18,7 +18,9 @@
 	<script>
 	$(function() {
 		var frm = $('#register');
-		frm.submit(function(e){
+		frm.submit(function submit(event){
+			alert("radi");
+			event.preventDefault();
 			if($('#pass1').val() != $('#pass2').val()){
 				alert('nisu iste');
 				return false;
@@ -36,11 +38,14 @@
 				type: "POST",
 				data: formData,
 				contentType: "application/json",
-				datatype: 'json',
 				success: function(data) {
-					
+					alert("uspeh");
+				},
+				error: function(){
+					alert("neuspeh");
 				}
 			});
+			return false;
 		});
 	});
 	</script>
