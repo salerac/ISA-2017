@@ -55,7 +55,7 @@ public class UserController {
 			else {
 			     System.out.println("RADI");
 			     session.setAttribute("loggedUser", user);
-			  
+			     session.setAttribute("userId", user.getId());
 			     return new ResponseEntity<>(HttpStatus.OK);
 			}
 			}

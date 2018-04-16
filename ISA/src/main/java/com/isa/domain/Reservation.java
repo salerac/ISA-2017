@@ -8,7 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Reservation {
 	
 	@Id
@@ -21,6 +25,28 @@ public class Reservation {
 	private Projection projection;
 	@OneToMany
 	private List<Seat> reservedSeats;
+	@ManyToOne
+	private Movie movie;
+	@OneToOne
+	private Seat reservedSeat;
+	
+	public Reservation() {}
+	
+	public Seat getReservedSeat() {
+		return reservedSeat;
+	}
+
+	public void setReservedSeat(Seat reservedSeat) {
+		this.reservedSeat = reservedSeat;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
 
 	public Long getId() {
 		return id;

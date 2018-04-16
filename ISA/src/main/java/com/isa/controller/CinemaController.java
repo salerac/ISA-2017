@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -32,9 +34,10 @@ public class CinemaController {
 	private CinemaService service;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView getAll(Model model) throws IOException{
+	public ModelAndView getAll(Model model, HttpSession session) throws IOException{
 			List<Cinema> cinemas = service.findAll();
 			model.addAttribute("cinemas",cinemas);
+			model.addAttribute("userId",session.getAttribute("userId"));
 			return new ModelAndView("RegisteredUser/home");
 	}
 	

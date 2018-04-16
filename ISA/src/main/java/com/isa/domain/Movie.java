@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
@@ -35,6 +36,9 @@ public class Movie {
 	private String image;
 	
 	private double rating;
+	
+	@ManyToOne()
+	private Repertoire repertoire;
 	
 	@OneToMany
 	private List<Projection> projections;

@@ -15,11 +15,14 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity(name="Korisnik")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 	@Column @NotEmpty(message="Polje ime nije uneto.") @Pattern(regexp="[a-zA-Z]+", message="U Imenu su dozvoljena samo slova.")
 	private String name;
 	@Column @NotEmpty(message="Polje prezime nije uneto.") @Pattern(regexp="[a-zA-Z]+", message="U Prezimenu su dozvoljena samo slova.")
@@ -105,9 +108,9 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 	public Long getId() {
-		return Id;
+		return id;
 	}
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 }

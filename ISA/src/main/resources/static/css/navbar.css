@@ -17,7 +17,9 @@ body {
   
 }
 
-
+#table1{
+	background-color: white;
+}
 .navbar-default {
   background-color: #9b36c4;
   border-color: #a477b7;
