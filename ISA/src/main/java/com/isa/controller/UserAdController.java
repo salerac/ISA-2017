@@ -1,5 +1,6 @@
 package com.isa.controller;
 
+import java.io.IOException;
 import java.util.Collection;
 
 
@@ -7,14 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.isa.domain.Offer;
-
+import com.isa.domain.Requisite;
 import com.isa.domain.UserAd;
 import com.isa.service.UserAdService;
 
@@ -29,6 +32,13 @@ public class UserAdController {
 	public ResponseEntity<Collection<UserAd>> getUserAds(){
 		Collection<UserAd> userAds = userAdService.findAll();
 		return new ResponseEntity<Collection<UserAd>>(userAds,HttpStatus.OK);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ModelAndView getAll(Model model) throws IOException{
+			Collection<UserAd> userAds = userAdService.findAll();
+			model.addAttribute("userAds",userAds);
+			return new ModelAndView("RegisteredUser/home");
 	}
 	
 	@RequestMapping(value="/{id}", method= RequestMethod.DELETE)
