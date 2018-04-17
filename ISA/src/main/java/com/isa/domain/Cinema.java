@@ -10,15 +10,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@Indexed
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Cinema {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+	@Field
 	private String name;
 	
 	private String adress;

@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.isa.domain.Cinema;
+import com.isa.service.CinemaSearchService;
 import com.isa.service.CinemaService;
 
 @Controller
@@ -32,6 +33,9 @@ public class CinemaController {
 	
 	@Autowired
 	private CinemaService service;
+	@Autowired
+	private CinemaSearchService searchService;
+
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView getAll(Model model, HttpSession session) throws IOException{
@@ -58,6 +62,17 @@ public class CinemaController {
 	public ResponseEntity<Cinema> deleteAll(){
 			service.deleteAll();
 			return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/search/", method= RequestMethod.GET)
+	public ResponseEntity<List<Cinema>> search(@RequestParam(value="search") String q, Model model) {
+		List<Cinema> cinemas = null;
+		cinemas = searchService.fuzzySearch(q);
+		if(!cinemas.isEmpty()) {
+		model.addAttribute("search",cinemas);
+		return new ResponseEntity<>(HttpStatus.OK);
+		}
+		else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 
