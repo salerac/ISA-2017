@@ -39,3 +39,15 @@ insert into PROJECTION values(3,parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:
 insert into RESERVATION values(1,true,1,1,1,4,1);
 insert into RESERVATION values(2,true,4,2,2,6,1);
 insert into RESERVATION values(3,true,4,2,3,6,1);
+
+/*Requisites*/
+insert into REQUISITE values(1,'Guitar from movie','no picture','Guitar','10000','0');
+insert into REQUISITE values(2,'Helmet from movie-replica','no picture','Helmet','6000','0');
+insert into REQUISITE values(3,'Suicide Squad Harley Quinn Jacket','no picture','Jacket','5000','0');
+insert into REQUISITE values(4,'Adult Rey Costume - Star Wars 7','no picture','Costume','20000','0');
+
+/*UserAds*/
+
+insert into USER_AD values(1,'false','1',parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:mm'),'description 1','no picture','userAd1');
+
+
