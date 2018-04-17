@@ -27,7 +27,16 @@
 		$('#edit').click(function(event){
 			event.preventDefault();
 				$('#fieldset').prop('disabled', false);
+				$('#edit').hide();
+				$('#cancel').show();
 				$('#submit').show();
+		});
+		$('#cancel').click(function(event){
+			event.preventDefault();
+				$('#fieldset').prop('disabled', false);
+				$('#edit').show();
+				$('#cancel').hide();
+				$('#submit').hide();
 		});
 		
 		$('.link').click(function(event){
@@ -92,6 +101,21 @@
 			});
 			return false;
 		});
+		
+		$('#cinemaSearch').submit(function(event){
+			event.preventDefault();
+			$.ajax({
+				url: "/cinemas/search/?search="+ $('#searchInput').val() ,
+				success: function(data){
+					alert('Bioskop uspesno pronadjen');
+				},
+				error: function(data){
+					alert('Trazeni bioskop ne postoji');
+				}
+				
+			});
+		});
+		
 					
 });
 	$(function(){
@@ -196,6 +220,7 @@
 		<input id="userNumber"  type="text" class="form-control" placeholder="Phone number" name="number" required="required" th:value="${session.loggedUser.getPhoneNumber()}"><br>
 		</fieldset>
 		<button id="edit" class="btn">Edit</button>
+		<button id="cancel" class="btn" style="display:none">Cancel</button>
 		<button id="submit" class="btn" style="display:none; background-color:8FBC8F">Submit</button>
 	  	</form>
 		</div>
@@ -240,8 +265,17 @@
             <td th:if="${cinema.isCinema() == true}" th:text="${cinema.getAdress()}">ayy</td>
             <td th:if="${cinema.isCinema() == true}" th:text="${cinema.getDescription()}">ayy</td>
         </tr>
+        
     </table>
-	  
+    <br>
+	<div style="width:700px">
+     <form action="#" id="cinemaSearch">
+    <h2>Rezervacija karata</h2>
+    <p>Trazi bioskop: </p>
+     <input class="form-control" id="searchInput" name="search" style="width: 300px; display: inline-block"></input>
+     <button type="submit" class="btn">Search</button> 
+    </form>  
+    </div>
 	</div>
 	
  <div id="tab3" class="tab-pane fade">
