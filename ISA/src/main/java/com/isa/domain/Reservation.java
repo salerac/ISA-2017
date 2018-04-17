@@ -39,7 +39,6 @@ public class Reservation {
 	public boolean checkCancel() {
 		Date todayDate = new Date();
 		if((todayDate.toInstant().isBefore(projection.getDate().toInstant().minus(30,ChronoUnit.MINUTES))) && !(todayDate.after(projection.getDate()))) {
-			System.out.println("Aktivna");
 			return true;
 		}
 			

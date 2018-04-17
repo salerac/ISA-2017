@@ -18,7 +18,12 @@
 	<title> User </title>
 	
 	<script>
-	$(function(){	
+	$(function(){
+		$('#edit').click(function(event){
+			event.preventDefault();
+				$('#fieldset').prop('disabled', false);
+				$('#submit').show();
+		});
 		
 		$('.link').click(function(event){
 			event.preventDefault();
@@ -55,8 +60,35 @@
 			});
 			
 		});
+		
+		$('#submit').click(function submit(event){
+			event.preventDefault();
+			var url = "/edit/"+ $('#span1').text();
+			formData = JSON.stringify({
+				email:$("#info [name='email1']").val(),
+                password:$("#info [name='password1']").val(),
+                name:$("#info [name='firstName']").val(),
+                surname:$("#info [name='lastName']").val(),
+                city:$("#info [name='city']").val(),
+                phoneNumber:$("#info [name='number']").val(),
+			});
+			$.ajax({
+				url: url,
+				type: "PUT",
+				data: formData,
+				contentType: "application/json",
+				success: function(data) {
+					$('#fieldset').prop('disabled', true);
+					$('#submit').hide();
+				},
+				error: function(){
+					alert("neuspeh");
+				}
+			});
+			return false;
+		});
 					
-				});
+});
 	</script>
 
 </head>
@@ -98,15 +130,22 @@
 	  
 	  <div id="home" class="tab-pane fade in active">
 	 
-		<div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
-		
-		<p style="font-size:150%;" th:text="${session.loggedUser.getName()}" th:unless="${session == null}"></p>
-	  	<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getSurname()}" th:unless="${session == null}"></p>
-		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getEmail()}" th:unless="${session == null}"></p>
-		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getPhoneNumber()}" th:unless="${session == null}"></p>
-		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getCity()}" th:unless="${session == null}"></p>
-		<p style="font-size:150%;" class="text-lg-left" th:text="${session.loggedUser.getPrivilege()}" th:unless="${session == null}"></p>
-	  	
+		<div style="max-width:700px" th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}" class="form-group">
+		<h1>User Profile</h1>
+		<form id="info">
+		<br>
+		<label for="userName">Personal info: </label>
+		<fieldset id="fieldset" disabled>
+		<input id="userName"  type="text" class="form-control" placeholder="First Name" name="firstName" required="required" th:value="${session.loggedUser.getName()}"><br>
+	  	<input id="userSurname"  type="text" class="form-control" placeholder="Last Name" name="lastName" required="required" th:value="${session.loggedUser.getSurname()}"><br>
+		<input id="userEmail"  type="text" class="form-control" placeholder="Email" name="email1" required="required" th:value="${session.loggedUser.getEmail()}"><br>
+		<input type="password" class="form-control" placeholder="Password" name="password1" required="required" id="pass1" th:value="${session.loggedUser.getPassword()}"><br>
+		<input id="userCity"  type="text" class="form-control" placeholder="City" name="city" required="required" th:value="${session.loggedUser.getCity()}"><br>
+		<input id="userNumber"  type="text" class="form-control" placeholder="Phone number" name="number" required="required" th:value="${session.loggedUser.getPhoneNumber()}"><br>
+		</fieldset>
+		<button id="edit" class="btn">Edit</button>
+		<button id="submit" class="btn" style="display:none; background-color:8FBC8F">Submit</button>
+	  	</form>
 		</div>
 		<hr>
 		

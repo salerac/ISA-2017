@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -98,6 +99,22 @@ public class UserController {
 		User savedUser = service.save(user);
 		return new ResponseEntity(savedUser, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/edit/{id}", method= RequestMethod.PUT)
+	public ResponseEntity<User> editUser(@RequestBody User newUser, @PathVariable(value="id") Long id) throws Exception{
+		User user = service.findOne(id);
+		user.setName(newUser.getName());
+		user.setSurname(newUser.getSurname());
+		user.setEmail(newUser.getEmail());
+		user.setPassword(newUser.getPassword());
+		user.setCity(newUser.getCity());
+		user.setPhoneNumber(newUser.getPhoneNumber());
+		service.save(user);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+		
+		
+	}	
+	
 	
 	@RequestMapping(value="/loadUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<User>> getUsers(HttpSession session){
