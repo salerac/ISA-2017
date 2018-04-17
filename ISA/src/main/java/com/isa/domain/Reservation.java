@@ -1,5 +1,7 @@
 package com.isa.domain;
 
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -27,10 +29,42 @@ public class Reservation {
 	private List<Seat> reservedSeats;
 	@ManyToOne
 	private Movie movie;
+	@ManyToOne
+	private Cinema cinema;
 	@OneToOne
 	private Seat reservedSeat;
 	
+	private boolean active;
+
+	public boolean checkCancel() {
+		Date todayDate = new Date();
+		if((todayDate.toInstant().isBefore(projection.getDate().toInstant().minus(30,ChronoUnit.MINUTES))) && !(todayDate.after(projection.getDate()))) {
+			System.out.println("Aktivna");
+			return true;
+		}
+			
+		else {
+			this.active = false;
+			return false;
+		}
+	}
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public Reservation() {}
+	
+	public Cinema getCinema() {
+		return cinema;
+	}
+
+	public void setCinema(Cinema cinema) {
+		this.cinema = cinema;
+	}
 	
 	public Seat getReservedSeat() {
 		return reservedSeat;

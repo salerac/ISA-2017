@@ -1,9 +1,13 @@
 package com.isa.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,11 +26,26 @@ public class Cinema {
 	private String city;
 	
 	private String description;
-	
+	@OneToOne
+	private Repertoire repertoire;
 	@NotNull
 	private boolean isCinema;
-
+	@OneToMany
+	private List<ShowRoom> sale;
 	
+	
+	public Repertoire getRepertoire() {
+		return repertoire;
+	}
+	public void setRepertoire(Repertoire repertoire) {
+		this.repertoire = repertoire;
+	}
+	public List<ShowRoom> getSale() {
+		return sale;
+	}
+	public void setSale(List<ShowRoom> sale) {
+		this.sale = sale;
+	}
 	public Cinema(Long id, String name, String adress, String description) {
 		super();
 		this.id = id;

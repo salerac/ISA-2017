@@ -3,6 +3,7 @@ package com.isa.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -13,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.controller.dto.ReservationDTO;
 import com.isa.domain.Reservation;
 import com.isa.service.ReservationService;
 
 @RestController
+@EnableAutoConfiguration
 @RequestMapping(value="/reservations")
 public class ReservationController {
 	@Autowired
@@ -40,13 +44,12 @@ public class ReservationController {
 		
 		
 	}
-	@RequestMapping(value = "/lol/{id}", method=RequestMethod.GET)
-	public ResponseEntity<List<Reservation>> getReservations2(@PathVariable Long id, Model model) {
-		List<Reservation> reservations = service.getUserReservations(id);
-		model.addAttribute("reservations",reservations);
-		return new ResponseEntity<>(reservations, HttpStatus.OK);
-		
-		
+	@RequestMapping(value = "/deactivate", method=RequestMethod.GET)
+	public ResponseEntity<Long> deactivate(@RequestParam(value="id") Long id) {
+		Reservation reservation = service.deactivate(id);
+		if(reservation != null)
+		return new ResponseEntity<>(id,HttpStatus.OK);
+		else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 }

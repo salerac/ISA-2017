@@ -1,6 +1,8 @@
 package com.isa.domain;
 
-import java.sql.Date;
+
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ public class Projection {
 	
 	private Date date;
 	
+
 	@OneToMany
 	private List<Seat> seats;
 	

@@ -1,5 +1,7 @@
 package com.isa.service;
 
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,20 @@ public class ReservationService {
 		if(reservation!=null) {
 			reservationRepository.delete(reservation);
 			return reservation;
+		}
+		return null;
+	}
+	public Reservation deactivate(long id) {
+		System.out.println("Usao");
+		Reservation reservation = reservationRepository.getOne(id);
+		Date date = reservation.getProjection().getDate();
+		Date todayDate = new Date();
+		if(reservation != null) {
+		if(!date.toInstant().isBefore(todayDate.toInstant().minus(30,ChronoUnit.MINUTES))) {		
+			reservation.setActive(false);
+		    reservationRepository.save(reservation);
+		    return reservation;
+		}
 		}
 		return null;
 	}

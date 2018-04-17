@@ -41,7 +41,6 @@ public class GlobalModel {
 		Collection<UserAd> userAds = userAdService.findAll();
 		model.addAttribute("requisites",requisites);
 		model.addAttribute("userAds", userAds);
-		model.addAttribute("reservations",reservations);
 		model.addAttribute("cinemas",cinemas);
 		model.addAttribute("userId",session.getAttribute("userId"));
 	}

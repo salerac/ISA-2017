@@ -1,6 +1,8 @@
 package com.isa.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -15,14 +17,9 @@ public class Seat {
 	
 	private int number;
 	
+	@Enumerated(EnumType.STRING)
 	private SeatType type;
-	
-	public enum SeatType {
-		REGULAR,
-		VIP,
-		PROMOTION,
-		CLOSED
-	}
+
 
 	public Long getId() {
 		return id;
