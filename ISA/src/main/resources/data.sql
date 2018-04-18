@@ -31,10 +31,18 @@ insert into SEAT values (7,151,'REGULAR');
 insert into MOVIE values(1,'Opis','Guillermo Del Toro','120',null,true,'Pacific Rim',200.00,4.5,1);
 insert into MOVIE values(2,'Opis','James Cameron','180',null,true,'Avatar',300.00,3,2);
 
+insert into REPERTOIRE_MOVIES values(1,1);
+insert into REPERTOIRE_MOVIES values(1,2);
+
 /* Projekcije */
-insert into PROJECTION values(1,parsedatetime('2014-02-22 20:00','yyyy-MM-dd HH:mm'), 300,1);
-insert into PROJECTION values(2,parsedatetime('2014-02-22 22:00','yyyy-MM-dd HH:mm'), 300,2);
-insert into PROJECTION values(3,parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:mm'), 300,1);
+insert into PROJECTION values(1,parsedatetime('2014-02-22 20:00','yyyy-MM-dd HH:mm'), 300);
+insert into PROJECTION values(2,parsedatetime('2014-02-22 22:00','yyyy-MM-dd HH:mm'), 300);
+insert into PROJECTION values(3,parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:mm'), 300);
+
+insert into MOVIE_PROJECTIONS values(1,1);
+insert into MOVIE_PROJECTIONS values(1,3);
+insert into MOVIE_PROJECTIONS values(2,2);
+
 /* Rezervacije */
 insert into RESERVATION values(1,true,1,1,1,4,1);
 insert into RESERVATION values(2,true,4,2,2,6,1);

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/navbar.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
+	<script th:inline="javascript">
+  		$( function() {
+  			/*<![CDATA[*/
+  		    var cinema = /*[[${cinema}]]*/ 'cinema';
+  		  	var selectedDate;
+  		  	var projDates = [];
+  		  	var projTimes = [];
+  			/*]]>*/
+    		$( "#datepicker" ).datepicker({
+    			dateFormat: "yy-mm-dd", 
+    	        onSelect: function(){
+    	        selectedDate = $(this).val();
+    	        var date = new Date(selectedDate);
+    	        var year = date.getFullYear();
+      			var month = date.getMonth()+1;
+      			var day = date.getDate();
+      			var newdate = year + "-" + month + "-" + day;
+    	        var nasao = $.inArray(newdate,projDates);
+    	        console.log(projDates);
+    	        if(nasao == 1){
+    	        	$('#status').hide();
+    	        	$('#termin').show();
+    	        	$.each(projTimes, function(i, item){
+    	        		$('#termin').append($('<option>', { 
+    	        	        value: item.value,
+    	        	        text : item 
+    	        	    }));
+    	        	});
+    	        	
+    	        }
+    	        else{
+    	        	$('#status').show();
+    	        	$('#termin').hide();
+    	        }
+    	        }
+    		});
+    		$('#dropOperator').on('change', function(){
+    			projDates = [];
+    			projTimes = [];
+    			var selected = $(this).val();
+    			var projections = cinema.repertoire.movies[selected-1].projections;
+    			var i = 0;
+    			$.each(projections, function(){
+    				var date = new Date(projections[i].date);
+    				console.log(date);
+    				var year = date.getFullYear();
+          			var month = date.getMonth()+1;
+          			var day = date.getDate();
+          			var newdate = year + "-" + month + "-" + day;
+          			var postoji = $.inArray(newdate,projDates);
+          			if(postoji != 1){
+          			projDates.push(newdate);
+          			}
+          			
+          			var time = new Date(projections[i].date);
+          			var hour = time.getHours();
+          			if(hour=="0") hour="00";
+          			var minute = time.getMinutes();
+          			if(minute=="0") minute="00";
+          			var newTime = hour + ":" + minute;
+          			projTimes.push(newTime);
+          			i++;
+          			console.log(projDates);
+          			console.log(projTimes);
+    			});
+    			
+    			if(this.value != 0){
+    			$('#dateDiv').show();
+    			}
+    			else $('#dateDiv').hide();
+    		});
+  		});
+ 	 </script>
+	<title>Insert title here</title>
+</head>
+<body>
+	<div style="margin-left: 30px;" th:with="var=0">
+		<h1>Repertoire</h1>
+		<select class="form-control" id="dropOperator" style="display: inline-block; width:500px" th:object="${selectedOption}">
+   			<option value="0">Select Movie</option>
+    		<option th:each="movie : ${cinema.getRepertoire().getMovies()}" th:value="${movie.getId()}" th:text="${movie.getName()}"></option>
+    	</select>
+    	<div id="dateDiv" style="display: none">
+    		<h3>Date: </h3>
+    		<div id="datepicker"></div>
+    		<div style="width: 300px">
+    		<h3>Termin: </h3>
+    			<select id="termin" style="display: none" class="form-control">
+    			<option value="0">Select time</option>
+    			
+    			</select>
+    			<h4 id="status">Nema termina ovog datuma.</h4>
+    		</div>
+    		
+    	</div>
+	</div>
+</body>
+</html>

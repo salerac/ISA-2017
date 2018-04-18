@@ -107,7 +107,10 @@
 			$.ajax({
 				url: "/cinemas/search/?search="+ $('#searchInput').val() ,
 				success: function(data){
-					alert('Bioskop uspesno pronadjen');
+					for(i = 0; i<data.length; i++){
+					newLink = "<a href=\"/cinemas/" + data[i].id +"\">" +data[i].name +"</a><br>";
+					$("#searchResults").append(newLink);
+					}
 				},
 				error: function(data){
 					alert('Trazeni bioskop ne postoji');
@@ -310,7 +313,22 @@
     <p>Trazi bioskop: </p>
      <input class="form-control" id="searchInput" name="search" style="width: 300px; display: inline-block"></input>
      <button type="submit" class="btn">Search</button> 
-    </form>  
+    </form>
+    <p th:if="${session.search != null}"></p>
+    <div style="width:300px;" id="searchResults" >
+    	
+    
+    </div><br>
+    
+    <p>Or choose:</p>
+    <div style="width:700px" class="form-group blu-margin">
+    <select class="form-control" id="dropOperator" style="display: inline-block; width:300px">
+    <option value="0">Select Cinema</option>
+    <option th:each="cinema : ${cinemas}" th:if="${cinema.isCinema()==true}" th:value="${cinema.getId()}" th:text="${cinema.getName()}"></option>
+    </select>
+    <button class="btn">Continue</button>
+	</div>
+      
     </div>
 	</div>
 	

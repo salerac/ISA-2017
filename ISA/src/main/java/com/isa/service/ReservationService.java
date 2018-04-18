@@ -40,7 +40,7 @@ public class ReservationService {
 		User user = userRepository.getOne(userId);
 		
 		reservation.setProjection(projection);
-		reservation.setMovie(projection.getMovie());
+		//reservation.setMovie(projection.getMovie());
 		reservation.setReservedSeat(seat);
 		reservation.setReserver(user);
 		

@@ -23,18 +23,35 @@ public class Projection {
 	
 	private Date date;
 	
-
+	
+	//private ShowRoom showRoom;
+	
 	@OneToMany
 	private List<Seat> seats;
 	
 	private double price;
 	
-	@ManyToOne
+	/*@ManyToOne
 	private Movie movie;
-
+	
+*/
+	
+	
 	public long getId() {
 		return id;
 	}
+
+	/*public ShowRoom getShowRoom() {
+		return showRoom;
+	}
+
+
+
+	public void setShowRoom(ShowRoom showRoom) {
+		this.showRoom = showRoom;
+	}
+*/
+
 
 	public void setId(long id) {
 		this.id = id;
@@ -64,13 +81,13 @@ public class Projection {
 		this.price = price;
 	}
 
-	public Movie getMovie() {
+	/*public Movie getMovie() {
 		return movie;
-	}
+	}*/
 
-	public void setMovie(Movie movie) {
+	/*public void setMovie(Movie movie) {
 		this.movie = movie;
-	}
+	}*/
 	
 	
 

@@ -8,5 +8,5 @@ import com.isa.domain.Projection;
 
 public interface ProjectionRepository extends JpaRepository<Projection, Long> {
 	
-	public List<Projection> findByMovieId(long id);
+	//public List<Projection> findByMovieId(long id);
 }

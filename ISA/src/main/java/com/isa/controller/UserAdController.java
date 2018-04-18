@@ -64,6 +64,8 @@ public class UserAdController {
 	
 	@RequestMapping(method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserAd> addUserAd(@RequestBody UserAd userAd){
+		System.out.println(userAd.getDate());
+		
 		UserAd newUserAd = userAdService.save(userAd, false);
 		return new ResponseEntity<>(newUserAd,HttpStatus.OK);
 }

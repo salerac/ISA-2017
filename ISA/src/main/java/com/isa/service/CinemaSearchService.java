@@ -46,9 +46,6 @@ public class CinemaSearchService {
 		
 		List<Cinema> cinemas = null;
 		cinemas = jpaQuery.getResultList();
-		for(Cinema c: cinemas) {
-			System.out.println(c.getName());
-		}
 		return cinemas;
 				
 		

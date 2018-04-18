@@ -24,6 +24,9 @@ public class Repertoire {
 	@JsonBackReference
 	private Cinema cinema;
 
+	public Movie getMovie(int i) {
+		return movies.get(i);
+	}
 	public long getId() {
 		return id;
 	}
