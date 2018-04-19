@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isa.domain.Cinema;
 import com.isa.domain.Requisite;
-
+import com.isa.domain.Reservation;
 import com.isa.service.RequisiteService;
 
 @RestController
@@ -71,10 +71,18 @@ public class RequisiteController {
 	@RequestMapping(value="/{id}/{userId}", method = RequestMethod.PUT)
 	public ResponseEntity<Requisite> reserveRequisite(@PathVariable Long id, @PathVariable Long userId){
 		Requisite requisite = requisiteService.findOne(id);
-		requisite.setReserved(userId);
+		//requisite.setReserved(userId);
 		Requisite reservedRequisite = requisiteService.save(requisite);
 		return new ResponseEntity<>(reservedRequisite, HttpStatus.OK);
 	}
+	@RequestMapping(value = "/reserve", method=RequestMethod.PUT)
+	public ResponseEntity<Long> deactivate(@RequestParam(value="id") Long id) {
+		Requisite requisite = requisiteService.deactivate(id);
+		if(requisite != null)
+		return new ResponseEntity<>(id,HttpStatus.OK);
+		else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
 	
 
 }

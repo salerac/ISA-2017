@@ -442,15 +442,22 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Reservation</th>
+            <th> A</th>
         </tr>
       </thead>
        
      <tbody>
-        <tr th:each="requisite : ${requisites}">
+        <tr th:each="requisite : ${requisites}" th:switch="${requisite.isReserved()}">
         	
             <td th:text="${requisite.getNameReq()}">ayy</td>
             <td th:text="${requisite.getDescriptionReq()}">ayy</td>
             <td th:text="${requisite.getPrice()}">ayy</td>
+            
+            <td th:id="'active' + ${requisite.getId()}" th:case="true">Aktivna</td>
+            <td th:id="'active' + ${requisite.getId()}" th:case="false">Neaktivna</td>  
+            
+            <td><a th:if="${requisite.isReserved()==true}" class="link" th:href="@{/requisite/deactivate/(id=${requisite.getId()})}" th:id="'cancel' + ${requisite.getId()}">Cancel</a></td>
             
         </tr>
         </tbody>

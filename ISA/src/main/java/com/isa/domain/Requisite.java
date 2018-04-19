@@ -25,11 +25,11 @@ public class Requisite {
 	@Column(name="Price", columnDefinition="DECIMAL(40,2)")
 	private float price;
 	
-	@Column(name="Reserved", columnDefinition="NUMERIC")
-	private long reserved=0;
+	@Column(name="Reserved", columnDefinition="VARCHAR(80)")
+	private boolean reserved;
 
 	
-	public Requisite(String nameReq, String descriptionReq, String image, float price, long reserved) {
+	public Requisite(String nameReq, String descriptionReq, String image, float price, boolean reserved) {
 		super();
 		this.nameReq = nameReq;
 		this.descriptionReq = descriptionReq;
@@ -90,13 +90,15 @@ public class Requisite {
 		this.price = price;
 	}
 
-	public long getReserved() {
+	public boolean isReserved() {
 		return reserved;
 	}
 
-	public void setReserved(long reserved) {
+	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
 	}
+
+	
 	
 	
 }
