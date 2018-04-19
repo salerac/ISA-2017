@@ -34,8 +34,8 @@ public class Projection {
 	/*@ManyToOne
 	private Movie movie;
 	
-*/
-	
+*/	@OneToMany
+	private List<Reservation> reservations;
 	
 	public long getId() {
 		return id;

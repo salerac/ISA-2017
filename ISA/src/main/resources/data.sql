@@ -57,6 +57,10 @@ insert into RESERVATION values(1,true,1,1,1,4,1);
 insert into RESERVATION values(2,true,4,2,2,6,1);
 insert into RESERVATION values(3,true,4,2,3,6,1);
 
+insert into PROJECTION_RESERVATIONS values(1,1);
+insert into PROJECTION_RESERVATIONS values(2,2);
+insert into PROJECTION_RESERVATIONS values(3,3);
+
 /*Requisites*/
 insert into REQUISITE values(1,'Guitar from movie','no picture','Guitar','10000','true');
 insert into REQUISITE values(2,'Helmet from movie-replica','no picture','Helmet','6000','false');
