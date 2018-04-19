@@ -38,7 +38,7 @@ public class HomeController {
 	public String registeredHome(Model model,HttpSession session) {
 		List<Reservation> reservations = reservationService.getUserReservations(Long.parseLong(session.getAttribute("userId").toString()));
 		for(Reservation r: reservations){
-			r.checkCancel();
+			//r.checkCancel();
 		}
 		model.addAttribute("reservations",reservations);
 		return "RegisteredUser/home";

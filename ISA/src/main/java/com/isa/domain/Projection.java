@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -35,11 +37,23 @@ public class Projection {
 	private Movie movie;
 	
 */	@OneToMany
+	@JsonBackReference
 	private List<Reservation> reservations;
 	
 	public long getId() {
 		return id;
 	}
+	
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
 
 	public ShowRoom getShowRoom() {
 		return showRoom;

@@ -43,11 +43,11 @@ public class CinemaController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView getAll(Model model, HttpSession session) throws IOException{
+	public ResponseEntity<List<Cinema>> getAll(Model model, HttpSession session) throws IOException{
 			List<Cinema> cinemas = service.findAll();
 			model.addAttribute("cinemas",cinemas);
 			model.addAttribute("userId",session.getAttribute("userId"));
-			return new ModelAndView("RegisteredUser/home");
+			return new ResponseEntity<>(cinemas, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

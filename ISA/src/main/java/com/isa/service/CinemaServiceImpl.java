@@ -25,7 +25,7 @@ public class CinemaServiceImpl implements CinemaService{
 
 	@Override
 	public Cinema findOne(Long id) {
-		return repository.getOne(id);
+		return (Cinema) repository.getOne(id);
 	}
 
 	@Override
@@ -33,5 +33,6 @@ public class CinemaServiceImpl implements CinemaService{
 		repository.deleteAll();
 		
 	}
+	
 
 }

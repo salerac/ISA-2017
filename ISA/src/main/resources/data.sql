@@ -35,10 +35,10 @@ insert into REPERTOIRE_MOVIES values(1,1);
 insert into REPERTOIRE_MOVIES values(1,2);
 
 /* Sale */
-insert into SHOW_ROOM values(1,1);
-insert into SHOW_ROOM values(2,2);
-insert into SHOW_ROOM values(3,3);
-insert into SHOW_ROOM values(4,4);
+insert into SHOW_ROOM (id, number, length, width) values(1,1,20,10);
+insert into SHOW_ROOM (id, number, length, width) values(2,2,20,10);
+insert into SHOW_ROOM (id, number, length, width) values(3,3,20,10);
+insert into SHOW_ROOM (id, number, length, width) values(4,4,20,10);
 
 
 /* Projekcije */
@@ -46,8 +46,11 @@ insert into PROJECTION values(1,parsedatetime('2018-04-22 20:00','yyyy-MM-dd HH:
 insert into PROJECTION values(2,parsedatetime('2018-04-22 22:00','yyyy-MM-dd HH:mm'), 300,2);
 insert into PROJECTION values(3,parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:mm'), 300,3);
 insert into PROJECTION values(4,parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:mm'), 300,4);
+insert into PROJECTION values(5,parsedatetime('2018-04-22 22:00','yyyy-MM-dd HH:mm'), 300,3);
+
 
 insert into MOVIE_PROJECTIONS values(1,1);
+insert into MOVIE_PROJECTIONS values(1,5);
 insert into MOVIE_PROJECTIONS values(1,3);
 insert into MOVIE_PROJECTIONS values(1,4);
 insert into MOVIE_PROJECTIONS values(2,2);
@@ -56,10 +59,18 @@ insert into MOVIE_PROJECTIONS values(2,2);
 insert into RESERVATION values(1,true,1,1,1,4,1);
 insert into RESERVATION values(2,true,4,2,2,6,1);
 insert into RESERVATION values(3,true,4,2,3,6,1);
+insert into RESERVATION values(4,true,1,1,1,7,1);
+insert into RESERVATION values(5,true,1,1,1,5,1);
+insert into RESERVATION values(6,true,1,1,1,2,1);
+insert into RESERVATION values(7,true,1,1,1,1,1);
 
 insert into PROJECTION_RESERVATIONS values(1,1);
 insert into PROJECTION_RESERVATIONS values(2,2);
 insert into PROJECTION_RESERVATIONS values(3,3);
+insert into PROJECTION_RESERVATIONS values(1,4);
+insert into PROJECTION_RESERVATIONS values(1,5);
+insert into PROJECTION_RESERVATIONS values(1,6);
+insert into PROJECTION_RESERVATIONS values(1,7);
 
 /*Requisites*/
 insert into REQUISITE values(1,'Guitar from movie','no picture','Guitar','10000','true');

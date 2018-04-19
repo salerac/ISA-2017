@@ -12,7 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Reservation {
@@ -24,6 +27,7 @@ public class Reservation {
 	@ManyToOne
 	private User reserver;
 	@ManyToOne
+	@JsonManagedReference
 	private Projection projection;
 	@OneToMany
 	private List<Seat> reservedSeats;
@@ -60,6 +64,7 @@ public class Reservation {
 	public Cinema getCinema() {
 		return cinema;
 	}
+	
 
 	public void setCinema(Cinema cinema) {
 		this.cinema = cinema;

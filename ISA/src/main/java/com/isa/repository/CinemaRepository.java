@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.isa.domain.Cinema;
 @Repository
 public interface CinemaRepository extends JpaRepository<Cinema, Long>{
-
+	
+		
 }

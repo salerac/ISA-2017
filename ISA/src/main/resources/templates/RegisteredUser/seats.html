@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="../js/jquery.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/navbar.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
+<meta charset="ISO-8859-1">
+
+<script th:inline="javascript">
+	$(document).ready(function(){
+		/*<![CDATA[*/
+		    var width = /*[[${width}]]*/'width';
+		    var length = /*[[${length}]]*/ 'length';
+		    var res = /*[[${seats}]]*/ 'seats';
+			/*]]>*/
+			var rezervacije = [];
+			$.each(res, function(i, item){
+				rezervacije.push(item.number);
+			});
+			
+			width = parseInt(width);
+			length = parseInt(length);
+			var k = 1;
+			for(i=0; i<width; i++){
+				for(j=0; j<length; j++){
+					$('#dugmad').append('<label class="radio-inline"><input type="radio" value="'+k+'" name="optradio" id="'+k+'"></label>');
+					if(rezervacije.includes(k)){
+						console.log(k);
+						$('#'+k).attr('disabled',true);
+					}
+					if(j==length-1) $('#dugmad').append('<br>');
+					k++;
+				}
+			}
+			
+			
+		    
+			
+	});
+
+</script>
+<title>Insert title here</title>
+</head>
+<body>
+<div class="well">
+	<h1>Rezervacija sedista</h1>
+	<h3>Izaberite sediste: </h3>
+	<div id="dugmad" class="well">
+	
+	</div>
+</div>
+</body>
+</html>
