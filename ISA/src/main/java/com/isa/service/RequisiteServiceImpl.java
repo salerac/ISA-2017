@@ -52,6 +52,9 @@ public class RequisiteServiceImpl implements RequisiteService {
 		Requisite requisite = requisiteRepository.getOne(id);
 		
 		if(requisite != null) {
+			requisite.setReserved(true);
+		    requisiteRepository.save(requisite);
+		    return requisite;
 		
 		}
 		return null;

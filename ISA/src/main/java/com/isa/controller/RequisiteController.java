@@ -75,14 +75,14 @@ public class RequisiteController {
 		Requisite reservedRequisite = requisiteService.save(requisite);
 		return new ResponseEntity<>(reservedRequisite, HttpStatus.OK);
 	}
-	@RequestMapping(value = "/reserve", method=RequestMethod.PUT)
+	@RequestMapping(value = "/reserve", method=RequestMethod.GET)
 	public ResponseEntity<Long> deactivate(@RequestParam(value="id") Long id) {
 		Requisite requisite = requisiteService.deactivate(id);
 		if(requisite != null)
 		return new ResponseEntity<>(id,HttpStatus.OK);
 		else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-
+	
 	
 
 }

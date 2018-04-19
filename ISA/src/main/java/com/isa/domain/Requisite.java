@@ -15,7 +15,7 @@ public class Requisite {
 	
 	@Column(name="Name", columnDefinition="VARCHAR(80)")
 	private String nameReq;
-
+	
 	@Column(name="Description", columnDefinition="VARCHAR(150)")
 	private String descriptionReq;
 	
@@ -27,7 +27,7 @@ public class Requisite {
 	
 	@Column(name="Reserved", columnDefinition="VARCHAR(80)")
 	private boolean reserved;
-
+	
 	
 	public Requisite(String nameReq, String descriptionReq, String image, float price, boolean reserved) {
 		super();
@@ -40,7 +40,7 @@ public class Requisite {
 	
 	public Requisite() {
 	}
-
+	
 	
 	public long getId() {
 		return id;
@@ -95,7 +95,9 @@ public class Requisite {
 	}
 
 	public void setReserved(boolean reserved) {
+		
 		this.reserved = reserved;
+		
 	}
 
 	

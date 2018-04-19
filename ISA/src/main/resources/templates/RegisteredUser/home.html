@@ -39,6 +39,7 @@
 				$('#submit').hide();
 		});
 		
+		
 		$('.link').click(function(event){
 			event.preventDefault();
 			var href = $(this).attr('href');
@@ -121,6 +122,7 @@
 		
 					
 });
+	
 	$(function(){
 
 	var frm = $('#createReq');
@@ -203,6 +205,35 @@
 				});
 				return false;
 			});
+	});
+	
+	
+	
+	$('.res').click(function(event){
+		event.preventDefault();
+		var href = $(this).attr('href');
+		$.confirm({
+			title: 'Potvrda',
+			content: 'Da li ste sigurni?',
+			buttons:{
+				formSubmit: {
+					text: 'Potvrdi',
+					action: function(){
+						$.ajax({
+							url: href,
+							type: "GET",
+							success: function(data){
+								$('#not'+data).hide();
+								$('#reserved'+data).text("Neaktivna");
+							}
+						});
+					}
+				},
+				cancel: {
+					text: 'Otkazi'
+				}
+			}
+		})
 	});
 	</script>
 
@@ -439,6 +470,7 @@
         
       <thead>
         <tr>
+        	<th>Id</th>
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
@@ -450,15 +482,16 @@
      <tbody>
         <tr th:each="requisite : ${requisites}" th:switch="${requisite.isReserved()}">
         	
+        	<td th:text="${requisite.getId()}">ayy</td>
             <td th:text="${requisite.getNameReq()}">ayy</td>
             <td th:text="${requisite.getDescriptionReq()}">ayy</td>
             <td th:text="${requisite.getPrice()}">ayy</td>
             
-            <td th:id="'active' + ${requisite.getId()}" th:case="true">Aktivna</td>
-            <td th:id="'active' + ${requisite.getId()}" th:case="false">Neaktivna</td>  
-            
-            <td><a th:if="${requisite.isReserved()==true}" class="link" th:href="@{/requisite/deactivate/(id=${requisite.getId()})}" th:id="'cancel' + ${requisite.getId()}">Cancel</a></td>
-            
+            <td th:id="'reserved' + ${requisite.getId()}" th:case="true">Aktivna</td>
+            <td th:id="'reserved' + ${requisite.getId()}" th:case="false">Neaktivna</td>  
+              
+           <td><a th:if="${requisite.isReserved()==false}" class="res" th:href="@{/requisite/reserve/(id=${requisite.getId()})}" th:id="'not' + ${requisite.getId()}">Reserve</a></td>
+            <!--  <td><button type="button" class="res" class="btn btn-primary"></button></td> -->
         </tr>
         </tbody>
             <tfoot>
