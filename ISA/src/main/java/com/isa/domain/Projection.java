@@ -23,8 +23,8 @@ public class Projection {
 	
 	private Date date;
 	
-	
-	//private ShowRoom showRoom;
+	@ManyToOne
+	private ShowRoom showRoom;
 	
 	@OneToMany
 	private List<Seat> seats;
@@ -41,7 +41,7 @@ public class Projection {
 		return id;
 	}
 
-	/*public ShowRoom getShowRoom() {
+	public ShowRoom getShowRoom() {
 		return showRoom;
 	}
 
@@ -50,7 +50,7 @@ public class Projection {
 	public void setShowRoom(ShowRoom showRoom) {
 		this.showRoom = showRoom;
 	}
-*/
+
 
 
 	public void setId(long id) {

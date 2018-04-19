@@ -11,9 +11,6 @@ public class ShowRoom {
 	@GeneratedValue
 	private Long id;
 	
-	@ManyToOne
-	private Cinema cinema;
-	
 	private int number;
 	
 	public ShowRoom() {
@@ -38,13 +35,7 @@ public class ShowRoom {
 		this.number = number;
 	}
 
-	public Cinema getCinema() {
-		return cinema;
-	}
-
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
-	}
+	
 
 	
 

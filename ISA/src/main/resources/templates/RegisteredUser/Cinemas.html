@@ -16,6 +16,7 @@
 	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
 	<script th:inline="javascript">
   		$( function() {
+  			var projections;
   			/*<![CDATA[*/
   		    var cinema = /*[[${cinema}]]*/ 'cinema';
   		  	var selectedDate;
@@ -25,22 +26,64 @@
     		$( "#datepicker" ).datepicker({
     			dateFormat: "yy-mm-dd", 
     	        onSelect: function(){
+    	        $("button").hide();
+    	        $('#sale1')
+            		.empty()
+            		.append('<option value="0">Select showroom</option>');
     	        selectedDate = $(this).val();
     	        var date = new Date(selectedDate);
     	        var year = date.getFullYear();
       			var month = date.getMonth()+1;
       			var day = date.getDate();
       			var newdate = year + "-" + month + "-" + day;
-    	        var nasao = $.inArray(newdate,projDates);
-    	        console.log(projDates);
-    	        if(nasao == 1){
+    	        var nasao = ~$.inArray(newdate,projDates);
+    	       	
+    	        if(nasao != 0){
+    	       
     	        	$('#status').hide();
     	        	$('#termin').show();
+    	        	$('#termin')
+    	        		.empty()
+    	        		.append('<option value="'+'1'+'">Select time</option>');
     	        	$.each(projTimes, function(i, item){
+    	        		
+    	        		if(projDates[i]==newdate)
+    	        	{
     	        		$('#termin').append($('<option>', { 
-    	        	        value: item.value,
+    	        	        value: i,
     	        	        text : item 
     	        	    }));
+    	        	}
+    	        	});
+    	        	
+    	        	$('#termin').on('change',function(){
+    	        		
+    	        		console.log(this.value);
+    	        		$('#sale1')
+    	        			.empty()
+    	        			.append('<option value="0">Select showroom</option>');
+    	        		var selectedTime = $(this).val();
+    	        		var split = projTimes[selectedTime].split(':');
+    	        		var datum = new Date(newdate);
+    	        		
+    	        		datum.setHours(split[0] - datum.getTimezoneOffset() / 60);
+    	        		datum.setMinutes(split[1]);	        		
+    	        		datum1 = datum.toJSON();
+    	        		var date = datum1.split('Z');
+    	        		var realDate = date[0];
+    	        		
+    	        		$.each(projections, function(i, proj){
+    	        			var x = proj.date.split('+');
+    	        			var myDate = x[0];
+    	        			
+    	        			if(myDate == realDate){
+    	        				$('#sale1').append($('<option>',{
+    	        					value: proj.showRoom.id,
+    	        					text: proj.showRoom.number
+    	        				}));
+    	        				
+    	        			}
+    	        		});	
     	        	});
     	        	
     	        }
@@ -51,14 +94,36 @@
     	        }
     		});
     		$('#dropOperator').on('change', function(){
+    			
+    			$('#termin')
+        		.empty()
+        		.append('<option value="0">Select time</option>');
+    			
+    			$('#sale1')
+        		.empty()
+        		.append('<option value="0">Select showroom</option>');
+    			
+    			var date = new Date();
+    		    date.setDate(date.getDate());
+    		    $( "#datepicker" ).datepicker("setDate",date);
+    		    
+    			
+    			if(this.value != 0){
+    				$('#dateDiv').hide();
+        			$('#dateDiv').show();
+        			}
+        			else $('#dateDiv').hide();
+    			
+    			
     			projDates = [];
     			projTimes = [];
     			var selected = $(this).val();
-    			var projections = cinema.repertoire.movies[selected-1].projections;
+    		    projections = cinema.repertoire.movies[selected-1].projections;
+    		    console.log(projections);
     			var i = 0;
     			$.each(projections, function(){
     				var date = new Date(projections[i].date);
-    				console.log(date);
+    				
     				var year = date.getFullYear();
           			var month = date.getMonth()+1;
           			var day = date.getDate();
@@ -76,8 +141,7 @@
           			var newTime = hour + ":" + minute;
           			projTimes.push(newTime);
           			i++;
-          			console.log(projDates);
-          			console.log(projTimes);
+          			
     			});
     			
     			if(this.value != 0){
@@ -85,6 +149,21 @@
     			}
     			else $('#dateDiv').hide();
     		});
+    		
+    		$("#sale1").on('change',function(){
+    			if(this.value == 0) {
+        			$("button").hide();
+        		}
+    			else $('button').show();
+    		});
+    		
+    		$("button").click(function(){
+    			$.ajax({
+    				
+    				
+    			});
+    		});
+    		
   		});
  	 </script>
 	<title>Insert title here</title>
@@ -106,7 +185,16 @@
     			
     			</select>
     			<h4 id="status">Nema termina ovog datuma.</h4>
+    			
+    			<div style="width: 300px;" id="sale">
+    				<h3>Sala: </h3>
+    				<select id="sale1" class="form-control">
+    					<option value="0">Select showroom</option>
+    				</select>
+    			</div>
     		</div>
+    		<br>
+    		<button style="display:none" class="btn">Proceed</button>
     		
     	</div>
 	</div>

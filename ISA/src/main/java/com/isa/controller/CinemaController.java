@@ -99,6 +99,5 @@ public class CinemaController {
 		}
 		else return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
-	
 
 }
