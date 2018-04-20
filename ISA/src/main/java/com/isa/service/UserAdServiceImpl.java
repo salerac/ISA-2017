@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.domain.Requisite;
 import com.isa.domain.UserAd;
 import com.isa.repository.UserAdRepository;
 
@@ -44,6 +45,22 @@ public class UserAdServiceImpl implements UserAdService {
 		userAdRepository.delete(userAd);
 		return userAd;
 	}
+
+	@Override
+	public UserAd aprove(Long id) {
+		// TODO Auto-generated method stub
+			System.out.println("Usao");
+			UserAd userAd = userAdRepository.getOne(id);
+			
+			if(userAd != null) {
+				userAd.setAproved(true);
+			    userAdRepository.save(userAd);
+			    return userAd;
+			
+			}
+			return null;
+		}
+		
 	
 
 }

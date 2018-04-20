@@ -33,8 +33,12 @@ public class UserAd {
 	@Column(name="Picture", columnDefinition="VARCHAR(200)")
 	private String imageAd= "No Picture";
 	
+	/*
 	@Column(name="Approval", columnDefinition="BOOLEAN")
 	private Boolean aproved=false;
+	*/
+	@Column(name="Aproved", columnDefinition="VARCHAR(80)")
+	private boolean aproved;
 	
 	@Column(name="CreatedBy", columnDefinition="NUMERIC")
 	private long creatorId;
@@ -51,7 +55,10 @@ public class UserAd {
 	
 	Set<Offer> offers = new HashSet<Offer>();
 
-	public UserAd(String nameAd, String descriptionAd, String date, String imageAd, Boolean aproved,long creatorId) {
+	
+
+	
+	public UserAd(String nameAd, String descriptionAd, String date, String imageAd, boolean aproved, long creatorId) {
 		super();
 		this.nameAd = nameAd;
 		this.descriptionAd = descriptionAd;
@@ -61,7 +68,7 @@ public class UserAd {
 		this.creatorId = creatorId;
 	}
 
-	
+
 	public UserAd () {
 		
 	}
@@ -115,15 +122,7 @@ public class UserAd {
 	}
 
 
-	public Boolean getAproved() {
-		return aproved;
-	}
-
-
-	public void setAproved(Boolean aproved) {
-		this.aproved = aproved;
-	}
-
+	
 
 	public long getCreatorId() {
 		return creatorId;
@@ -146,6 +145,16 @@ public class UserAd {
 	
 	public void addOffer(Offer offer) {
 		offers.add(offer);
+	}
+
+
+	public boolean isAproved() {
+		return aproved;
+	}
+
+
+	public void setAproved(boolean aproved) {
+		this.aproved = aproved;
 	}
 	
 	

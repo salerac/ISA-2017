@@ -12,5 +12,7 @@ public interface UserAdService {
 	UserAd findOne(Long id);
 	UserAd delete(Long id);
 	
+	UserAd aprove(Long id);
+	
 
 }

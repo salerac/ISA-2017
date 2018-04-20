@@ -224,7 +224,7 @@
 							type: "GET",
 							success: function(data){
 								$('#not'+data).hide();
-								$('#reserved'+data).text("Neaktivna");
+								$('#reserved'+data).text("Aktivna");
 							}
 						});
 					}
@@ -236,6 +236,66 @@
 		})
 	});
 	});
+	
+	
+	$(function(){
+		$('.offers').click(function(event){
+			event.preventDefault();
+			var href = $(this).attr('href');
+			$.confirm({
+				title: 'Potvrda',
+				content: 'Da li ste sigurni?',
+				buttons:{
+					formSubmit: {
+						text: 'Potvrdi',
+						action: function(){
+							$.ajax({
+								url: href,
+								type: "GET",
+								success: function(data){
+									$('#ups'+data).hide();
+									<!--$('#ponudjeno'+data).text("Aktivna");-->
+								}
+							});
+						}
+					},
+					cancel: {
+						text: 'Otkazi'
+					}
+				}
+			})
+		});
+		});
+	
+	$(function(){
+		$('.aprovals').click(function(event){
+			event.preventDefault();
+			var href = $(this).attr('href');
+			$.confirm({
+				title: 'Potvrda',
+				content: 'Da li ste sigurni?',
+				buttons:{
+					formSubmit: {
+						text: 'Potvrdi',
+						action: function(){
+							$.ajax({
+								url: href,
+								type: "GET",
+								success: function(data){
+									$('#apr'+data).hide();
+									$('#status'+data).text("Aproved");
+								}
+							});
+						}
+					},
+					cancel: {
+						text: 'Otkazi'
+					}
+				}
+			})
+		});
+		});
+		
 	</script>
 
 </head>
@@ -581,6 +641,7 @@
             <th>Description</th>
             <th>Picture </th>
             <th>Date</th>
+            <th>Offer</th>
         </tr>
         <tr th:each="userAd : ${userAds}">
         	
@@ -588,6 +649,33 @@
             <td th:text="${userAd.getDescriptionAd()}">ayy</td>
             <td th:text="${userAd.getImageAd()}">ayy</td>
             <td th:text="${userAd.getDate()}">ayy</td>
+            
+            <td><a class="offers" th:href="@{/userAd/makeOffer/(id=${userAd.getId()})}" th:id="'ups' + ${userAd.getId()}">Make offer</a></td>
+	</tr>
+	</table>
+	<table class="table table-striped" th:if="${userAds != null}" ><!--th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}"-->
+        <tr>
+            
+            <th>Name</th>
+            <th>Description</th>
+            <th>Picture </th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Offer</th>
+        </tr>
+        <tr th:each="userAd : ${userAds}" th:switch="${userAd.isAproved()}">
+        	
+            <td th:text="${userAd.getNameAd()}">ayy</td>
+            <td th:text="${userAd.getDescriptionAd()}">ayy</td>
+            <td th:text="${userAd.getImageAd()}">ayy</td>
+            <td th:text="${userAd.getDate()}">ayy</td>
+            
+            <td th:id="'status' + ${userAd.getId()}" th:case="true">Aproved</td>
+            <td th:id="'status' + ${userAd.getId()}" th:case="false">Not aproved</td> 
+            
+            <td><a class="aprovals" th:href="@{/userAd/aprove/(id=${userAd.getId()})}" th:id="'apr' + ${userAd.getId()}">Aprove</a></td>
+            
+            
             
         </tr>
     </table>
