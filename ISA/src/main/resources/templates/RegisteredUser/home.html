@@ -22,7 +22,7 @@
 	
 	<title> User </title>
 	
-	<script>
+	<script th:inline="javascript">
 	$(function(){
 		$('#edit').click(function(event){
 			event.preventDefault();
@@ -239,35 +239,6 @@
 	
 	
 	$(function(){
-		$('.offers').click(function(event){
-			event.preventDefault();
-			var href = $(this).attr('href');
-			$.confirm({
-				title: 'Potvrda',
-				content: 'Da li ste sigurni?',
-				buttons:{
-					formSubmit: {
-						text: 'Potvrdi',
-						action: function(){
-							$.ajax({
-								url: href,
-								type: "GET",
-								success: function(data){
-									$('#ups'+data).hide();
-									<!--$('#ponudjeno'+data).text("Aktivna");-->
-								}
-							});
-						}
-					},
-					cancel: {
-						text: 'Otkazi'
-					}
-				}
-			})
-		});
-		});
-	
-	$(function(){
 		$('.aprovals').click(function(event){
 			event.preventDefault();
 			var href = $(this).attr('href');
@@ -295,6 +266,74 @@
 			})
 		});
 		});
+	
+
+	  
+	    
+	    $(function(){
+
+	    	var id;
+			$('.offers').click(function(event){
+				id = $(this).attr('id');
+				event.preventDefault();
+				$.confirm({
+					title: 'Potvrda',
+					content: 'Da li ste sigurni?',
+					buttons:{
+						formSubmit: {
+							text: 'Potvrdi',
+							action: function(){
+								$.ajax({
+										success: function(data){
+										//$('#ups'+data).hide();
+										<!--$('#ponudjeno'+data).text("Aktivna");-->
+										$('#makeOf').show();
+									}
+								});
+							}
+						},
+						cancel: {
+							text: 'Otkazi'
+						}
+					}
+				});
+			});
+			
+				var frm = $('#makeOf');
+				frm.submit(function submit(event){
+					
+					/*<![CDATA[*/
+			    	var user = /*[[${session.loggedUser}]]*/ 'user';
+			    	/*]]>*/
+					
+					event.preventDefault();
+					formData = JSON.stringify({
+						price:$("#makeOf [name='priceO']").val(),
+		                userId:user.id
+		                
+					});
+					
+					$.ajax({
+						url:"/userAd/makeOffer/"+id,
+						type: "POST",
+						data: formData,
+						contentType: "application/json",
+						
+						success: function(data){
+							alert("uspeh");
+							$('#makeOf').hide();
+							
+							
+						},
+						error: function(data){
+							alert('neuspeh');
+							 console.log(data);
+						}
+					});
+					return false;
+				});
+
+	    	}); 
 		
 	</script>
 
@@ -634,7 +673,7 @@
       <h1>Ads store</h1>
       <hr>
 
-      <table class="table table-striped" th:if="${userAds != null}">
+      <table class="table table-striped"  th:if="${userAds != null}">
         <tr>
             
             <th>Name</th>
@@ -650,7 +689,7 @@
             <td th:text="${userAd.getImageAd()}">ayy</td>
             <td th:text="${userAd.getDate()}">ayy</td>
             
-            <td><a class="offers" th:href="@{/userAd/makeOffer/(id=${userAd.getId()})}" th:id="'ups' + ${userAd.getId()}">Make offer</a></td>
+            <td><a class="offers"   th:id="${userAd.getId()}">Make offer</a></td>
 	</tr>
 	</table>
 	<table class="table table-striped" th:if="${userAds != null}" ><!--th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}"-->
@@ -681,11 +720,21 @@
     </table>
     </div>
     <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>ADS</p>
-      </div>
-      <div class="well">
-        <p>ADS</p>
+      <div >
+        
+         <form id="makeOf" style="display: none;">
+        <h1 class="text-center">Make offer</h1>
+			<hr>
+		
+		<div class="form-group">
+            <input type="text" class="form-control" placeholder="Price" name="priceO" required="required">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default btn-block">Submit</button>
+        </div>
+           
+    </form>
+        
       </div>
     </div>
   </div>

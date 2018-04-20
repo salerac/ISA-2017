@@ -1,5 +1,6 @@
 /* Dodavanje korisnika */
 insert into KORISNIK values(1,'Novi Sad',null,'salerac@gmail.com',true,'Aleksandar','123','1234','REGISTERED_USER','Rac');
+insert into KORISNIK values(2,'Novi Sad','null','milos23st@gmail.com',true,'Milos','ftn','1234','FanZone_ADMIN','Stefanovic');
 
 /* Dodavanje bioskopa */
 insert into REPERTOIRE (id, cinema_id) values (1, null);
