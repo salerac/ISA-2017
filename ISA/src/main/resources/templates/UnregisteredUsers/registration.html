@@ -19,7 +19,7 @@
 	$(function() {
 		var frm = $('#register');
 		frm.submit(function submit(event){
-			alert("radi");
+			
 			event.preventDefault();
 			if($('#pass1').val() != $('#pass2').val()){
 				alert('nisu iste');
@@ -39,7 +39,8 @@
 				data: formData,
 				contentType: "application/json",
 				success: function(data) {
-					alert("uspeh");
+					alert("Success");
+					window.location = "http://localhost:8080/login"
 				},
 				error: function(){
 					alert("neuspeh");

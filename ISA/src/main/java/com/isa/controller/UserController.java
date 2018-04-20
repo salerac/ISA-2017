@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.controller.dto.LoginDTO;
@@ -114,7 +115,11 @@ public class UserController {
 		
 		
 	}	
-	
+	@RequestMapping("/signout")
+	public ModelAndView signout(HttpSession session) {
+		session.invalidate();
+		return new ModelAndView("login");
+	}
 	
 	@RequestMapping(value="/loadUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<User>> getUsers(HttpSession session){

@@ -79,12 +79,13 @@ public class CinemaController {
 			return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/search/", method= RequestMethod.GET)
+	@RequestMapping(value="/search/{i}/", method= RequestMethod.GET)
 	@ResponseBody
-	public Object search(@RequestParam(value="search") String q, Model model, HttpSession session) {
+	public Object search(@RequestParam(value="search") String q, Model model, HttpSession session, @PathVariable("i") int j) {
 		
 		List<Cinema> cinemas = null;
 		cinemas = searchService.fuzzySearch(q);
+		if(j == 0) {
 		ArrayList<Cinema> onlyCinemas = new ArrayList<Cinema>();
 		if(!cinemas.isEmpty()) {
 		for(int i = 0; i< cinemas.size(); i++) {
@@ -97,7 +98,29 @@ public class CinemaController {
 		}
 		else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		else return new ResponseEntity<>(HttpStatus.CONFLICT);
+		
+		else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	//=====================
+		else 
+		{
+			ArrayList<Cinema> onlyCinemas = new ArrayList<Cinema>();
+			if(!cinemas.isEmpty()) {
+			for(int i = 0; i< cinemas.size(); i++) {
+				if(!cinemas.get(i).isCinema())
+					onlyCinemas.add(cinemas.get(i));		
+			}
+			if(!onlyCinemas.isEmpty()) {	
+			session.setAttribute("search",onlyCinemas);
+			return new ResponseEntity<>(onlyCinemas,HttpStatus.OK);
+			}
+			else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
+			else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		
+		 
 	}
 
 }

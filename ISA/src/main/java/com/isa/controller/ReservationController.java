@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.controller.dto.ReservationDTO;
 import com.isa.domain.Reservation;
+import com.isa.domain.User;
+import com.isa.service.EmailService;
 import com.isa.service.ReservationService;
+import com.isa.service.UserService;
 
 @RestController
 @EnableAutoConfiguration
@@ -27,6 +31,13 @@ import com.isa.service.ReservationService;
 public class ReservationController {
 	@Autowired
 	ReservationService service;
+	
+	@Autowired
+	EmailService emailService;
+	
+	@Autowired
+	UserService userService;
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservationDTO){
 		Reservation res = reservationDTO.getReservation();
@@ -35,7 +46,21 @@ public class ReservationController {
 		Long projectionId = reservationDTO.getProjectionId();
 		Long cinemaId = reservationDTO.getCinemaId();
 		Long movieId = reservationDTO.getMovieId();
+		User user = userService.findOne(userId);
+		
 		Reservation newReservation = service.save(res, projectionId, seatId, userId,cinemaId,movieId);
+		SimpleMailMessage reservationEmail = new SimpleMailMessage();
+		reservationEmail.setTo(user.getEmail());
+		reservationEmail.setSubject("Your reservation");
+		reservationEmail.setText("Your reservation information:\n"
+				+ "Location: " + newReservation.getCinema().getName() + "\n"
+				+ "Title: " + newReservation.getMovie().getName() + "\n"
+				+ "Date: " + newReservation.getProjection().getDate() + "\n"
+				+ "Room: " + newReservation.getProjection().getShowRoom().getNumber() + "\n"
+				+ "Seat: " + newReservation.getReservedSeat().getNumber() + "\n");
+		reservationEmail.setFrom("noreply@domain.com");
+		
+		emailService.sendEmail(reservationEmail);
 		return new ResponseEntity<Reservation>(newReservation, HttpStatus.OK);
 	}
 	@RequestMapping(value = "/{id}", method=RequestMethod.GET)
