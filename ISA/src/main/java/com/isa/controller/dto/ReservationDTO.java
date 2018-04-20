@@ -8,8 +8,13 @@ public class ReservationDTO {
 	
 	private Long userId;
 	
-	private long seatId;	
+	private long seatId;
+	
+	private Long cinemaId;
+	
+	private Long movieId;
 		
+	
 	public Reservation getReservation() {
 		Reservation rez = new Reservation();
 		return rez;
@@ -17,11 +22,26 @@ public class ReservationDTO {
 	public ReservationDTO() {
 		super();
 	}
-	public ReservationDTO(long projectionId, Long userId, long seatId) {
+	public ReservationDTO(long projectionId, Long userId, long seatId, Long cinemaId, Long movieId) {
 		super();
 		this.projectionId = projectionId;
 		this.userId = userId;
 		this.seatId = seatId;
+		this.cinemaId = cinemaId;
+		this.movieId= movieId;
+	}
+	
+	public Long getCinemaId() {
+		return cinemaId;
+	}
+	public void setCinemaId(Long cinemaId) {
+		this.cinemaId = cinemaId;
+	}
+	public Long getMovieId() {
+		return movieId;
+	}
+	public void setMovieId(Long movieId) {
+		this.movieId = movieId;
 	}
 	public long getProjectionId() {
 		return projectionId;

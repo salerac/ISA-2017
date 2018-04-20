@@ -33,7 +33,9 @@ public class ReservationController {
 		Long seatId = reservationDTO.getSeatId();
 		Long userId = reservationDTO.getUserId();
 		Long projectionId = reservationDTO.getProjectionId();
-		Reservation newReservation = service.save(res, projectionId, seatId, userId);
+		Long cinemaId = reservationDTO.getCinemaId();
+		Long movieId = reservationDTO.getMovieId();
+		Reservation newReservation = service.save(res, projectionId, seatId, userId,cinemaId,movieId);
 		return new ResponseEntity<Reservation>(newReservation, HttpStatus.OK);
 	}
 	@RequestMapping(value = "/{id}", method=RequestMethod.GET)

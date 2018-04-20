@@ -7,11 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.domain.Cinema;
+import com.isa.domain.Movie;
 import com.isa.domain.Projection;
 import com.isa.domain.Reservation;
 import com.isa.domain.Seat;
 import com.isa.domain.User;
 import com.isa.repository.CinemaRepository;
+import com.isa.repository.MovieRepository;
 import com.isa.repository.ProjectionRepository;
 import com.isa.repository.ReservationRepository;
 import com.isa.repository.SeatRepository;
@@ -32,17 +35,27 @@ public class ReservationService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private SeatRepository seatRepository;
+	private SeatRepository seatRepository;	
 	
-	public Reservation save(Reservation reservation, Long projectionId, Long seatId, Long userId) {
+	@Autowired
+	private MovieRepository movieRepository;
+	
+	
+	
+	public Reservation save(Reservation reservation, Long projectionId, Long seatId, Long userId, Long cinemaId, Long movieId) {
 		Projection projection = projectionRepository.getOne(projectionId);
 		Seat seat = seatRepository.getOne(seatId);
 		User user = userRepository.getOne(userId);
+		Cinema cinema = cinemaRepository.getOne(cinemaId);
+		Movie movie = movieRepository.getOne(movieId);
 		
 		reservation.setProjection(projection);
 		//reservation.setMovie(projection.getMovie());
 		reservation.setReservedSeat(seat);
 		reservation.setReserver(user);
+		reservation.setCinema(cinema);
+		reservation.setMovie(movie);
+		reservation.setActive(true);
 		
 		return reservationRepository.save(reservation);
 		

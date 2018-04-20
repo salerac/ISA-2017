@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<script src="../js/jquery.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
+<script src="http://localhost:8080/js/jquery.min.js"></script>
+	<script src="http://localhost:8080/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/navbar.css">
+	<link rel="stylesheet" href="http://localhost:8080/css/navbar.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	 
@@ -19,8 +19,16 @@
 		    var width = /*[[${width}]]*/'width';
 		    var length = /*[[${length}]]*/ 'length';
 		    var res = /*[[${seats}]]*/ 'seats';
+		    var projection = /*[[${projection}]]*/ 'projection';
+		    var seats = /*[[${showRoomSeats}]]*/ 'showRoomSeats';
+		    var user = /*[[${session.loggedUser}]]*/ 'user';
+		    var cinema = /*[[${cinema}]]*/ 'cinema';
+		    var movie = /*[[${movie}]]*/ 'movie';
+		    
 			/*]]>*/
 			var rezervacije = [];
+			console.log(seats[0]);
+			var seat;
 			$.each(res, function(i, item){
 				rezervacije.push(item.number);
 			});
@@ -30,17 +38,53 @@
 			var k = 1;
 			for(i=0; i<width; i++){
 				for(j=0; j<length; j++){
-					$('#dugmad').append('<label class="radio-inline"><input type="radio" value="'+k+'" name="optradio" id="'+k+'"></label>');
+					$('#dugmad').append('<label class="radio-inline"><input type="radio" value="'+k+'" name="optradio" id="'+seats[k-1].id+'"></label>');
 					if(rezervacije.includes(k)){
 						console.log(k);
 						$('#'+k).attr('disabled',true);
 					}
 					if(j==length-1) $('#dugmad').append('<br>');
+					
+					
 					k++;
 				}
 			}
 			
-			
+			$('input').click(function(){
+				var current = $(this).val();
+				var seatId = $(this).attr('id');
+				seat = seatId;
+				$('#potvrda').show();
+				$('#alert').text("Selected seat: "+current + ".");
+				$('#sediste').remove();
+				$('#potvrda2').append('<h4 id="sediste">Seat: '+current+'</h4>' );
+			});
+			$('#submitForm').submit(function(event){
+				event.preventDefault();
+				data = JSON.stringify({
+					projectionId: projection.id,
+					userId: user.id,
+					seatId: seat,
+					cinemaId: cinema.id,
+					movieId: movie.id
+					
+				});
+				$.ajax({
+					url: "/reservations",
+					method: "POST",
+					data: data,
+					contentType: "application/json",
+					success: function(data){
+						alert("uspeh");
+						window.location = "http://localhost:8080/home"
+						
+					},
+					error: function(data){
+						alert('neuspeh');
+						 console.log(data);
+					}
+				});
+			})
 		    
 			
 	});
@@ -50,10 +94,24 @@
 </head>
 <body>
 <div class="well">
-	<h1>Rezervacija sedista</h1>
-	<h3>Izaberite sediste: </h3>
-	<div id="dugmad" class="well">
+	<h1>Seat reservation</h1>
+	<h3>Choose your seat:  </h3>
+	<div id="dugmad" class="well" style="width: 700px">
 	
+	</div>
+	<h3 id="alert"></h3>
+	<h3 id="alert1"></h3>
+	<div class="well" id="potvrda" style="display: none; width: 400px">
+		<div id="potvrda2">
+		<h4 style="font-weight: bold;">Your reservation: </h4>
+		<h4 th:text="'Cinema: '+ ${cinema.name}"></h4>
+		<h4 th:text="'Movie: '+ ${movie.name}"></h4>
+		<h4 th:text="'Date: '+ ${projection.date}"></h4>
+		<h4 th:text="'Showroom: '+ ${projection.showRoom.number}"></h4>
+		</div>
+		<form id="submitForm">
+			<button type="submit" class="btn btn-default btn-block" id="submit">Confirm</button>
+		</form>
 	</div>
 </div>
 </body>

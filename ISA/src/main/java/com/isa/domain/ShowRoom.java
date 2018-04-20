@@ -1,9 +1,12 @@
 package com.isa.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 @Entity
 public class ShowRoom {
 	
@@ -17,6 +20,19 @@ public class ShowRoom {
 	
 	private int width;
 	
+	@OneToMany
+	private List<Seat> seats;
+	
+	public List<Seat> getSeats() {
+		return seats;
+	}
+
+
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
+	}
+
+
 	public int getLength() {
 		return length;
 	}
