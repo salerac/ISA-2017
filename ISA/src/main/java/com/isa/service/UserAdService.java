@@ -1,6 +1,7 @@
 package com.isa.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.isa.domain.UserAd;
 
@@ -13,6 +14,8 @@ public interface UserAdService {
 	UserAd delete(Long id);
 	
 	UserAd aprove(Long id);
+	
+	List<UserAd> findByCreatorId(Long Id);
 	
 
 }

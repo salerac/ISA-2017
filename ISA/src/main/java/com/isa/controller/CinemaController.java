@@ -29,6 +29,7 @@ import com.google.common.io.Resources;
 import com.isa.domain.Cinema;
 import com.isa.domain.Movie;
 import com.isa.domain.Projection;
+import com.isa.domain.Requisite;
 import com.isa.service.CinemaSearchService;
 import com.isa.service.CinemaService;
 
@@ -121,6 +122,11 @@ public class CinemaController {
 			}
 		
 		 
+	}
+	@RequestMapping(value="/add" ,method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cinema> addNewCinema(@RequestBody Cinema cinema){
+		Cinema newCinema = service.save(cinema);
+		return new ResponseEntity<>(newCinema, HttpStatus.OK);
 	}
 
 }

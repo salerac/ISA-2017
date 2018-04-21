@@ -1,6 +1,7 @@
 /* Dodavanje korisnika */
 insert into KORISNIK values(1,'Novi Sad',null,'salerac@gmail.com',true,'Aleksandar','123','1234','REGISTERED_USER','Rac');
-insert into KORISNIK values(2,'Novi Sad','null','milos23st@gmail.com',true,'Milos','ftn','1234','FanZone_ADMIN','Stefanovic');
+insert into KORISNIK values(2,'Novi Sad',null,'milos23st@gmail.com',true,'Milos','ftn','1234','FanZone_ADMIN','Stefanovic');
+insert into KORISNIK values(3,'Novi Sad',null,'admin@gmail.com',true,'Admin','admin','1234','ADMIN','System');
 
 /* Dodavanje bioskopa */
 insert into REPERTOIRE (id, cinema_id) values (1, null);
@@ -82,5 +83,6 @@ insert into REQUISITE values(4,'Adult Rey Costume - Star Wars 7','no picture','C
 /*UserAds*/
 
 insert into USER_AD values(1,'false','1',parsedatetime('2018-05-17 18:00','yyyy-MM-dd HH:mm'),'description 1','no picture','userAd1');
+insert into USER_AD values(2,'false','1',parsedatetime('2018-05-22 20:00','yyyy-MM-dd HH:mm'),'description 2','no picture','userAd2');
 
 

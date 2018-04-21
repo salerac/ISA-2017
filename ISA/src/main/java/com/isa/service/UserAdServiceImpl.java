@@ -1,12 +1,11 @@
 package com.isa.service;
 
 import java.util.Collection;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.domain.Requisite;
 import com.isa.domain.UserAd;
 import com.isa.repository.UserAdRepository;
 
@@ -60,7 +59,13 @@ public class UserAdServiceImpl implements UserAdService {
 			}
 			return null;
 		}
-		
-	
 
-}
+	@Override
+	public List<UserAd> findByCreatorId(Long Id) {
+		// TODO Auto-generated method stub
+		
+		return userAdRepository.findByCreatorId(Id);
+
+	}
+	}
+	

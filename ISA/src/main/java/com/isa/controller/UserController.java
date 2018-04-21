@@ -25,6 +25,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.controller.dto.LoginDTO;
 import com.isa.domain.Privilege;
+import com.isa.domain.Requisite;
 import com.isa.domain.User;
 import com.isa.service.EmailService;
 import com.isa.service.UserService;
@@ -130,6 +131,16 @@ public class UserController {
 		return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
 		
 		
+	}
+	
+	@RequestMapping(value="/addUser", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> addUser(@RequestBody User user) throws Exception{
+		user.setEnabled(true);
+		user.setConfirmationToken(null);
+		
+		User newUser = service.save(user);
+		
+		return new ResponseEntity<User>(newUser, HttpStatus.OK);
 	}
 	
 }

@@ -363,6 +363,73 @@
 				});
 
 	    	}); 
+	    
+	    
+	    $(function(){
+
+			var frm = $('#createTheater');
+				frm.submit(function submit(event){
+					event.preventDefault();
+					formData = JSON.stringify({
+						name:$("#createTheater [name='nameT']").val(),
+						city:$("createTheater[name = 'cityT']").val(),
+		                adress:$("#createTheater [name='adressT']").val(),	                
+		                description:$("#createTheater [name='descriptionT']").val(),
+					});
+					
+					$.ajax({
+						url: "/cinemas/add",
+						type: "POST",
+						data: formData,
+						contentType: "application/json",
+						success: function(data){
+							alert("uspeh");
+							
+							
+						},
+						error: function(data){
+							alert('neuspeh');
+							 console.log(data);
+						}
+					});
+					return false;
+				});
+		});
+	    
+	    $(function(){
+
+			var frm = $('#createUser');
+				frm.submit(function submit(event){
+					event.preventDefault();
+					formData = JSON.stringify({
+						email:$("#createUser [name='email']").val(),
+						password:$("#createUser [name='password']").val(),
+						name:$("#createUser [name='nameU']").val(),
+						surname:$("#createUser [name='surnameU']").val(),
+						city:$("#createUser [name='cityU']").val(),
+		                phoneNumber:$("#createUser [name='numberU']").val(),	                
+		                privilege:$("#createUser [name='privilegeU']").val(),
+					});
+					
+					$.ajax({
+						url: "/addUser",
+						type: "POST",
+						data: formData,
+						contentType: "application/json",
+						success: function(data){
+							alert("uspeh");
+							
+							
+						},
+						error: function(data){
+							alert('neuspeh');
+							 console.log(data);
+						}
+					});
+					return false;
+				});
+		});
+		
 		
 	</script>
 
@@ -405,7 +472,7 @@
 	  
 	  <div id="home" class="tab-pane fade in active">
 	 
-		<div style="max-width:700px" th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}" class="form-group">
+		<div style="max-width:700px" class="form-group"> <!--th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}"--> 
 		<h1>User Profile</h1>
 		<form id="info">
 		<br>
@@ -424,12 +491,79 @@
 	  	</form>
 		</div>
 		<hr>
+		<div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).ADMIN}" style="max-width:700px">
 		
+		 <form id="createUser">
+        <h1>Add User</h1>
+			<hr>
+			
+     <div class="form-group" >
+            <input type="email" class="form-control" placeholder="Email" name="email" required="required" >
+        </div>
+         <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" name="password" required="required" >
+        </div>
+        
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="First Name" name="nameU" required="required">
+        </div>
+        
+		<div class="form-group">
+            <input type="text" class="form-control" placeholder="Last Name" name="surnameU" required="required">
+        </div>
+		<div class="form-group">
+            <input type="text" class="form-control" placeholder="City" name="cityU" required="required">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Phone Number" name="numberU" required="required">
+        </div>
+        <div class="form-group">
+        <select name="privilegeU">
+    		<option value="ADMIN">ADMIN</option>
+    		<option value="FanZone_ADMIN">FanZone_ADMIN</option> 
+    		<option value="TC_ADMIN">TC_ADMIN</option>   		
+ 		 </select>
+ 		 </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-default btn-block">Submit</button>
+        </div>
+           
+    </form>
+		
+		
+		
+		</div>
 	
       </div>
 
  <div id="tab1" class="tab-pane fade" style="width: 700px">
       <h1>Theaters</h1>
+      <hr>
+      
+      <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).ADMIN}">
+        <form id="createTheater">
+        <h1 class="text-center">Add Theater</h1>
+			<hr>
+     <div class="form-group">
+            <input type="text" class="form-control" placeholder="Name" name="nameT" required="required">
+        </div>
+		<div class="form-group">
+            <input type="text" class="form-control" placeholder="City" name="cityT" required="required">
+        </div>
+		<div class="form-group">
+            <input type="text" class="form-control" placeholder="Adress" name="adressT" required="required">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Description" name="descriptionT" required="required">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default btn-block">Submit</button>
+        </div>
+           
+    </form>
+    </div>
+         
       <div>
 	  <table class="table table-striped" id="tableTheater">
 	  <thead>
@@ -601,7 +735,7 @@
   
     <div class="col-sm-2 sidenav">
     
-    <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
+    <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
         <form id="createReq">
         <h1 class="text-center">Add Requisite</h1>
 			<hr>
@@ -631,7 +765,7 @@
       <h1>Requisite store</h1>
       <hr>
 
-      <table id="example" class="table display" th:if="${requisites != null}">
+      <table id="example" class="table display" th:if="${requisites != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
         
       <thead>
         <tr>
@@ -667,10 +801,42 @@
             </tr>
         </tfoot>
     </table>
+    
+    
+     <table id="example" class="table display" th:if="${requisites != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
+        
+      <thead>
+        <tr>
+        	<th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            
+        </tr>
+      </thead>
+       
+     <tbody>
+        <tr th:each="requisite : ${requisites}" th:switch="${requisite.isReserved()}">
+        	
+        	<td th:text="${requisite.getId()}">ayy</td>
+            <td th:text="${requisite.getNameReq()}">ayy</td>
+            <td th:text="${requisite.getDescriptionReq()}">ayy</td>
+            <td th:text="${requisite.getPrice()}">ayy</td>
+            
+        </tr>
+        </tbody>
+            <tfoot>
+            <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            </tr>
+        </tfoot>
+    </table>
     </div>
     <div class="col-sm-2 sidenav">
       <div>
-    <form id="editReq">
+    <form id="editReq" th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
         <h1 class="text-center">Edit</h1>
 			<hr>
      <div class="form-group">
@@ -724,7 +890,7 @@
     </form>
      </div> 
      
-      <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
+      <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
     <h1>Aprove ad</h1>
     <button id="aprove" class="btn btn-default btn-block">Aprove</button>
     <button id="delete" class="btn btn-default btn-block">Disaprove</button>
@@ -738,7 +904,7 @@
       <h1>Ads store</h1>
       <hr>
 
-      <table class="table table-striped"  th:if="${userAds != null}">
+      <table class="table" id=""  th:if="${userAds != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
         <tr>
             
             <th>Name</th>
@@ -757,7 +923,7 @@
             <td><a class="offers"   th:id="${userAd.getId()}">Make offer</a></td>
 	</tr>
 	</table>
-	<table class="table table-striped" th:if="${userAds != null}" ><!--th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}"-->
+	<table class="table" id="tb_fza" th:if="${userAds != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
         <tr>
             
             <th>Name</th>
@@ -783,6 +949,8 @@
             
         </tr>
     </table>
+    
+    
     </div>
     <div class="col-sm-2 sidenav">
       <div >
