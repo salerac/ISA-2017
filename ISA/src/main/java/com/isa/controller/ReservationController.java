@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import com.isa.domain.Reservation;
 import com.isa.domain.User;
 import com.isa.service.EmailService;
 import com.isa.service.ReservationService;
+import com.isa.service.SeatService;
 import com.isa.service.UserService;
 
 @RestController
@@ -30,25 +33,42 @@ import com.isa.service.UserService;
 @RequestMapping(value="/reservations")
 public class ReservationController {
 	@Autowired
-	ReservationService service;
+	private ReservationService service;
 	
 	@Autowired
-	EmailService emailService;
+	private EmailService emailService;
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservationDTO){
+	@Autowired
+	private SeatService seatService;
+	
+	private Reservation newReservation;
+	private User user;
+	private ArrayList<Integer> seatNumbers; 
+	
+	
+	@RequestMapping(value="/{seats}", method=RequestMethod.POST)
+	public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservationDTO, @PathVariable Long []seats){
+		seatNumbers = new ArrayList<Integer>();
+		
+		for(Long i: seats) {
+		seatNumbers.add(seatService.findOne(i).getNumber());	
+			
 		Reservation res = reservationDTO.getReservation();
-		Long seatId = reservationDTO.getSeatId();
+		Long seatId = i;
 		Long userId = reservationDTO.getUserId();
 		Long projectionId = reservationDTO.getProjectionId();
 		Long cinemaId = reservationDTO.getCinemaId();
 		Long movieId = reservationDTO.getMovieId();
-		User user = userService.findOne(userId);
+		user = userService.findOne(userId);
 		
-		Reservation newReservation = service.save(res, projectionId, seatId, userId,cinemaId,movieId);
+		newReservation = service.save(res, projectionId, seatId, userId,cinemaId,movieId);
+		if(newReservation == null) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		}
 		SimpleMailMessage reservationEmail = new SimpleMailMessage();
 		reservationEmail.setTo(user.getEmail());
 		reservationEmail.setSubject("Your reservation");
@@ -57,7 +77,7 @@ public class ReservationController {
 				+ "Title: " + newReservation.getMovie().getName() + "\n"
 				+ "Date: " + newReservation.getProjection().getDate() + "\n"
 				+ "Room: " + newReservation.getProjection().getShowRoom().getNumber() + "\n"
-				+ "Seat: " + newReservation.getReservedSeat().getNumber() + "\n");
+				+ "Seats: " + Arrays.toString(seatNumbers.toArray()) + "\n");
 		reservationEmail.setFrom("noreply@domain.com");
 		
 		emailService.sendEmail(reservationEmail);

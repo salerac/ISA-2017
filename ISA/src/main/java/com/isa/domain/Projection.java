@@ -40,6 +40,11 @@ public class Projection {
 	@JsonBackReference
 	private List<Reservation> reservations;
 	
+
+	public void addReservation(Reservation reservation) {
+		reservations.add(reservation);
+		
+	}
 	public long getId() {
 		return id;
 	}

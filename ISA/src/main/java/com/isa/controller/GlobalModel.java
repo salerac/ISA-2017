@@ -33,16 +33,16 @@ public class GlobalModel {
 	
 	@ModelAttribute
 	public void addCinemas(Model model, HttpSession session) {
-		int userId = 1;
-	    session.setAttribute("userId", userId) ;
+		//int userId = 1;
+	    //session.setAttribute("userId", userId) ;
 		List<Cinema> cinemas = cinemaService.findAll();
-		List<Reservation> reservations = reservationService.getUserReservations(Long.parseLong(session.getAttribute("userId").toString()));
+		//List<Reservation> reservations = reservationService.getUserReservations(Long.parseLong(session.getAttribute("userId").toString()));
 		Collection<Requisite> requisites = requisiteService.findAll();
 		Collection<UserAd> userAds = userAdService.findAll();
 		model.addAttribute("requisites",requisites);
 		model.addAttribute("userAds", userAds);
 		model.addAttribute("cinemas",cinemas);
-		model.addAttribute("userId",session.getAttribute("userId"));
+		//model.addAttribute("userId",session.getAttribute("userId"));
 	}
 
 }

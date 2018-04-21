@@ -44,23 +44,23 @@
 			event.preventDefault();
 			var href = $(this).attr('href');
 			$.confirm({
-				title: 'Potvrda',
-				content: 'Da li ste sigurni?',
+				title: 'Confirmation',
+				content: 'Are you sure you want to cancel this reservation?',
 				buttons:{
 					formSubmit: {
-						text: 'Potvrdi',
+						text: 'Confirm',
 						action: function(){
 							$.ajax({
 								url: href,
 								success: function(data){
 									$('#cancel'+data).hide();
-									$('#active'+data).text("Neaktivna");
+									$('#active'+data).text("Canceled");
 								}
 							});
 						}
 					},
 					cancel: {
-						text: 'Otkazi'
+						text: 'Cancel'
 					}
 				},
 				onContentReady: function () {
@@ -469,7 +469,7 @@
     <p>Or choose:</p>
     <div style="width:700px" class="form-group blu-margin">
     <select class="form-control" id="dropOperator1" style="display: inline-block; width:300px">
-    <option value="0">Select Cinema</option>
+    <option value="0">Select Theater</option>
     <option th:each="cinema : ${cinemas}" th:if="${cinema.isCinema()==false}" th:value="${cinema.getId()}" th:text="${cinema.getName()}"></option>
     </select>
     <a href="" id="cinemaDrop1" class="btn btn-default" role="button">Continue</a>
@@ -535,13 +535,13 @@
     </div>
 
 	 <div id="tab4" class="tab-pane fade">
-      <h1>reservations</h1>
+      <h1>Reservations</h1>
 	  <table style="width:700px" class="table">
         <tr>
-            <th>Lokacija</th>
-            <th>Projekcija/Nastup</th>
-            <th>Sediste</th>
-            <th>Datum i vreme</th>
+            <th>Location</th>
+            <th>Movie/Show</th>
+            <th>Seat</th>
+            <th>Date and time</th>
             <th>Status</th>
             <th></th>
         </tr>
@@ -550,8 +550,8 @@
             <td th:text="${reservation.getMovie().getName()}">ayy</td>
             <td th:text="${reservation.getReservedSeat().getNumber()}">ayy</td>
             <td th:text="${reservation.getProjection().getDate()}">ayy</td>
-            <td th:id="'active' + ${reservation.getId()}" th:case="true">Aktivna</td>
-            <td th:id="'active' + ${reservation.getId()}" th:case="false">Neaktivna</td>  
+            <td th:id="'active' + ${reservation.getId()}" th:case="true">Active</td>
+            <td th:id="'active' + ${reservation.getId()}" th:case="false">Canceled</td>  
             <!--  <td><form th:action="@{/reservations/deactivate/(id=${reservation.getId()})}" method="PUT"><input type="submit" value="Cancel"/></form></td>-->
             <td><a th:if="${reservation.checkCancel() == true && reservation.isActive()==true}" class="link" th:href="@{/reservations/deactivate/(id=${reservation.getId()})}" th:id="'cancel' + ${reservation.getId()}">Cancel</a></td>
                  

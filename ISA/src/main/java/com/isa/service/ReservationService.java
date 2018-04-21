@@ -40,7 +40,8 @@ public class ReservationService {
 	@Autowired
 	private MovieRepository movieRepository;
 	
-	
+	@Autowired
+	private ProjectionService projectionService;
 	
 	public Reservation save(Reservation reservation, Long projectionId, Long seatId, Long userId, Long cinemaId, Long movieId) {
 		Projection projection = projectionRepository.getOne(projectionId);
@@ -57,7 +58,16 @@ public class ReservationService {
 		reservation.setMovie(movie);
 		reservation.setActive(true);
 		
-		return reservationRepository.save(reservation);
+		List<Seat> reservedSeats = projectionService.findReservedSeats(projectionId);
+		
+		if(reservedSeats.contains(reservation.getReservedSeat())) {
+			
+			return null;
+		}
+		Reservation returnRes = reservationRepository.save(reservation);
+		projection.addReservation(reservation);
+		projectionRepository.save(projection);
+		return returnRes;
 		
 	}
 	

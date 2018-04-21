@@ -37,6 +37,7 @@ public class HomeController {
 	@RequestMapping("/home")
 	public String registeredHome(Model model,HttpSession session) {
 		List<Reservation> reservations = reservationService.getUserReservations(Long.parseLong(session.getAttribute("userId").toString()));
+		
 		for(Reservation r: reservations){
 			//r.checkCancel();
 		}

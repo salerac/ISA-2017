@@ -27,21 +27,22 @@
 		    
 			/*]]>*/
 			var rezervacije = [];
-			console.log(seats[0]);
+			
 			var seat;
 			$.each(res, function(i, item){
 				rezervacije.push(item.number);
+				console.log(item.id);
 			});
-			
+			console.log(rezervacije);
 			width = parseInt(width);
 			length = parseInt(length);
 			var k = 1;
 			for(i=0; i<width; i++){
 				for(j=0; j<length; j++){
-					$('#dugmad').append('<label class="radio-inline"><input type="radio" value="'+k+'" name="optradio" id="'+seats[k-1].id+'"></label>');
+					$('#dugmad').append('<label class="checkbox-inline"><input type="checkbox" class="'+k+'" value="'+k+'" name="optradio" id="'+seats[k-1].id+'"></label>');
 					if(rezervacije.includes(k)){
 						console.log(k);
-						$('#'+k).attr('disabled',true);
+						$('.'+k).attr('disabled',true);
 					}
 					if(j==length-1) $('#dugmad').append('<br>');
 					
@@ -49,18 +50,42 @@
 					k++;
 				}
 			}
-			
+			var selected = []
+			var selectedNumber =[]
 			$('input').click(function(){
+				
+				$('#alert').empty();
 				var current = $(this).val();
 				var seatId = $(this).attr('id');
 				seat = seatId;
+				
+				if(!$(this).is(':checked')){
+					selected.splice( $.inArray(seat, selected), 1 );
+					selectedNumber.splice( $.inArray(current, selectedNumber), 1 );
+					console.log(seat+" UKLONJEN");
+					}
+				else{
+					selected.push(seat);
+					selectedNumber.push(current);
+					console.log(seat+" DODAT");
+				}
 				$('#potvrda').show();
-				$('#alert').text("Selected seat: "+current + ".");
+				$.each(selectedNumber, function(i, item){
+					if(i==0)
+						$('#alert').text("Selected seats: "+selectedNumber[0]);
+					else $('#alert').append(", "+selectedNumber[i]);
+				});
 				$('#sediste').remove();
-				$('#potvrda2').append('<h4 id="sediste">Seat: '+current+'</h4>' );
+				$.each(selectedNumber, function(i, item){
+				if(i==0)
+				$('#potvrda2').append('<h4 id="sediste">Seats: '+selectedNumber[0]+'</h4>');
+				else $('#sediste').append(", "+selectedNumber[i]);
+				});
 			});
 			$('#submitForm').submit(function(event){
 				event.preventDefault();
+				console.log(selected);
+				
 				data = JSON.stringify({
 					projectionId: projection.id,
 					userId: user.id,
@@ -70,23 +95,25 @@
 					
 				});
 				$.ajax({
-					url: "/reservations",
+					url: "/reservations/"+selected,
 					method: "POST",
 					data: data,
 					contentType: "application/json",
 					success: function(data){
-						alert("uspeh");
-						window.location = "http://localhost:8080/home"
-						
+						alert("Reservation added successfully. An email was sent to your adress with information about your reservation.");
+						window.location = "http://localhost:8080/home";
 					},
 					error: function(data){
-						alert('neuspeh');
+						alert('Sorry, those seats are no longer available.');
 						 console.log(data);
+						location.reload();
 					}
-				});
-			})
-		    
+				});	
+		
 			
+		    //window.location=("http://localhost:8080/home");
+			
+	});
 	});
 
 </script>
@@ -95,7 +122,7 @@
 <body>
 <div class="well">
 	<h1>Seat reservation</h1>
-	<h3>Choose your seat:  </h3>
+	<h3>Choose your seats:  </h3>
 	<div id="dugmad" class="well" style="width: 700px">
 	
 	</div>

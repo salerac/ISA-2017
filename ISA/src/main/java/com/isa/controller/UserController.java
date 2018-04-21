@@ -42,6 +42,7 @@ public class UserController {
 	@RequestMapping(value="/signin", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object login(@RequestBody LoginDTO loginDTO, HttpSession session){
 		User user = service.findByEmail(loginDTO.getEmail());
+		
 		if(user == null){
 			System.out.print("user null");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -58,6 +59,7 @@ public class UserController {
 			     System.out.println("RADI");
 			     session.setAttribute("loggedUser", user);
 			     session.setAttribute("userId", user.getId());
+			     
 			     return new ResponseEntity<>(HttpStatus.OK);
 			}
 			}
@@ -94,11 +96,11 @@ public class UserController {
 		
 }
 	@RequestMapping(value="/confirm", method = RequestMethod.GET)
-	public ResponseEntity<User> processConfirmationForm(@RequestParam Map requestParams) throws Exception{
+	public ModelAndView processConfirmationForm(@RequestParam Map requestParams) throws Exception{
 		User user = service.findByConfirmationToken(requestParams.get("token").toString());
 		user.setEnabled(true);
 		User savedUser = service.save(user);
-		return new ResponseEntity(savedUser, HttpStatus.OK);
+		return new ModelAndView("/login");
 	}
 	
 	@RequestMapping(value="/edit/{id}", method= RequestMethod.PUT)
