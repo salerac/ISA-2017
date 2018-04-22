@@ -143,4 +143,16 @@ public class UserController {
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/edit1/{id}", method= RequestMethod.PUT)
+	public ResponseEntity<User> editUser1(@RequestBody User newUser, @PathVariable(value="id") Long id) throws Exception{
+		User user = service.findOne(id);
+		user.getName();
+		user.getSurname();
+		user.getEmail();
+		user.setPassword(newUser.getPassword());
+		user.getCity();
+		user.getPhoneNumber();
+		service.save(user);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
 }

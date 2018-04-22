@@ -39,6 +39,22 @@
 				$('#submit').hide();
 		});
 		
+		$('#edit1').click(function(event){
+			event.preventDefault();
+				$('#field').prop('disabled', false);
+				$('#edit1').hide();
+				$('#cancel1').show();
+				$('#submit1').show();
+				
+		});
+		$('#cancel1').click(function(event){
+			event.preventDefault();
+				$('#field').prop('disabled', false);
+				$('#edit1').show();
+				$('#cancel1').hide();
+				$('#submit1').hide();
+		});
+		
 		
 		$('.link').click(function(event){
 			event.preventDefault();
@@ -95,6 +111,33 @@
 				success: function(data) {
 					$('#fieldset').prop('disabled', true);
 					$('#submit').hide();
+					
+				
+				},
+				error: function(){
+					alert("neuspeh");
+				}
+			});
+			return false;
+		});
+		
+		$('#submit1').click(function submit(event){
+			event.preventDefault();
+			var url = "/edit1/"+ $('#span1').text();
+			formData = JSON.stringify({
+				
+                password:$("#changePsw [name='password1']").val(),
+			});
+			$.ajax({
+				url: url,
+				type: "PUT",
+				data: formData,
+				contentType: "application/json",
+				success: function(data) {
+					$('#field').prop('disabled', true);
+					$('#submit1').hide();
+					$('#cancel1').hide();
+					$('#changePsw').remove();
 				},
 				error: function(){
 					alert("neuspeh");
@@ -185,6 +228,9 @@
 	    var table = $('#example').DataTable();
 	    var table1 = $('#tableTheater').DataTable();
 	 	var table2 = $('#cinemasTable').DataTable();
+	 	var table3 = $('#tb_fza').DataTable();
+	 	var table4 = $('#tb_ru').DataTable();
+	 	
 	    $('#example tbody').on( 'click', 'tr', function () {
 	        if ( $(this).hasClass('selected') ) {
 	            $(this).removeClass('selected');
@@ -471,8 +517,26 @@
 	  
 	  
 	  <div id="home" class="tab-pane fade in active">
+	  <!-- ----------------------------------------------------------- -->
+	  
+	  <form id="changePsw" style="padding-bottom:1000px;" th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
+		<br>
+		<h1>Change your password</h1>
+		<fieldset id="field" disabled>
+		<input type="password" class="form-control" placeholder="Password" name="password1" required="required" id="pass1" th:value="${session.loggedUser.getPassword()}"><br>
+		</fieldset>
+		<button id="edit1" class="btn btn-default">Edit</button>
+		<button id="cancel1" class="btn btn-default" style="display:none">Cancel</button>
+		<button id="submit1" class="btn btn-default" style="display:none; background-color:8FBC8F">Submit</button>
+		
+	  	</form>
+	  
+	  
+	  
+	 	
+	 <!-- -------------------------------------------------------------- -->
 	 
-		<div style="max-width:700px" class="form-group"> <!--th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}"--> 
+		<div style="max-width:700px" class="form-group" id="profileInfo"> <!--th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}"--> 
 		<h1>User Profile</h1>
 		<form id="info">
 		<br>
@@ -528,6 +592,9 @@
         <div class="form-group">
             <button type="submit" class="btn btn-default btn-block">Submit</button>
         </div>
+        <div class="form-group">
+           <button type="reset" class="btn btn-default btn-block" value="Reset" onClick="window.location.reload()">Reset</button>
+           </div>
            
     </form>
 		
@@ -538,8 +605,8 @@
       </div>
 
  <div id="tab1" class="tab-pane fade" style="width: 700px">
-      <h1>Theaters</h1>
-      <hr>
+      
+      
       
       <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).ADMIN}">
         <form id="createTheater">
@@ -563,6 +630,10 @@
            
     </form>
     </div>
+    
+   
+    <h1>Theaters</h1>
+    <hr>
          
       <div>
 	  <table class="table table-striped" id="tableTheater">
@@ -851,7 +922,7 @@
         <div class="form-group">
             <button type="submit" class="btn btn-default btn-block">Submit</button>
         </div>
-           
+        
     </form>
     
     </div>
@@ -890,12 +961,7 @@
     </form>
      </div> 
      
-      <div th:if="${session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
-    <h1>Aprove ad</h1>
-    <button id="aprove" class="btn btn-default btn-block">Aprove</button>
-    <button id="delete" class="btn btn-default btn-block">Disaprove</button>
-    
-    </div>
+      
      
       
     </div>
@@ -904,17 +970,20 @@
       <h1>Ads store</h1>
       <hr>
 
-      <table class="table" id=""  th:if="${userAds != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
+      <table class="table" id="tb_ru"  th:if="${userAds != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).REGISTERED_USER}">
+       <thead>
         <tr>
-            
+            <th>Id</th>
             <th>Name</th>
             <th>Description</th>
             <th>Picture </th>
             <th>Date</th>
             <th>Offer</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="userAd : ${userAds}">
-        	
+        	<td th:text="${userAd.getId()}">ayy</td>
             <td th:text="${userAd.getNameAd()}">ayy</td>
             <td th:text="${userAd.getDescriptionAd()}">ayy</td>
             <td th:text="${userAd.getImageAd()}">ayy</td>
@@ -922,10 +991,12 @@
             
             <td><a class="offers"   th:id="${userAd.getId()}">Make offer</a></td>
 	</tr>
+	</tbody>
 	</table>
 	<table class="table" id="tb_fza" th:if="${userAds != null && session.loggedUser.getPrivilege() == T(com.isa.domain.Privilege).FanZone_ADMIN}">
+        <thead>
         <tr>
-            
+            <th>Id</th>
             <th>Name</th>
             <th>Description</th>
             <th>Picture </th>
@@ -933,8 +1004,11 @@
             <th>Status</th>
             <th>Offer</th>
         </tr>
-        <tr th:each="userAd : ${userAds}" th:switch="${userAd.isAproved()}">
+        </thead>
+        <tbody >
+        <tr th:each="userAd : ${userAds}" th:switch="${userAd.isAproved()}" >
         	
+        	<td th:text="${userAd.getId()}">ayy</td>
             <td th:text="${userAd.getNameAd()}">ayy</td>
             <td th:text="${userAd.getDescriptionAd()}">ayy</td>
             <td th:text="${userAd.getImageAd()}">ayy</td>
@@ -943,11 +1017,13 @@
             <td th:id="'status' + ${userAd.getId()}" th:case="true">Aproved</td>
             <td th:id="'status' + ${userAd.getId()}" th:case="false">Not aproved</td> 
             
-            <td><a class="aprovals" th:href="@{/userAd/aprove/(id=${userAd.getId()})}" th:id="'apr' + ${userAd.getId()}">Aprove</a></td>
+            <td><a class="aprovals" th:if="${userAd.isAproved() == false}" th:href="@{/userAd/aprove/(id=${userAd.getId()})}" th:id="'apr' + ${userAd.getId()}">Aprove</a></td>
+         
             
             
             
         </tr>
+        </tbody>
     </table>
     
     
